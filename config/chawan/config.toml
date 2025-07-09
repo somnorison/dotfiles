@@ -42,6 +42,15 @@ scripting = 'app'
 url = 'https://compudanzas\.itch\.io/.*'
 scripting = 'app'
 
+[[siteconf]]
+url = 'https://stackoverflow\.com/.*'
+cookie = 'save'
+scripting = 'app'
+
+# [[siteconf]]
+# url = 'https://registry\.terraform\.io/.*'
+# scripting = 'app'
+
 # [[siteconf]]
 # url = 'https://registry\.terraform\.io/.*'
 # scripting = "app"
