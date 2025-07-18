@@ -19,12 +19,41 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
-keymap("n", "n", "nzz", opts)
-keymap("n", "N", "Nzz", opts)
-keymap("n", "*", "*zz", opts)
-keymap("n", "#", "#zz", opts)
-keymap("n", "g*", "g*zz", opts)
-keymap("n", "g#", "g#zz", opts)
+keymap("t", "<C-h>", "<C-\\><C-n><C-w>h", opts)
+keymap("t", "<C-j>", "<C-\\><C-n><C-w>j", opts)
+keymap("t", "<C-k>", "<C-\\><C-n><C-w>k", opts)
+keymap("t", "<C-l>", "<C-\\><C-n><C-w>l", opts)
+
+
+-- plugin agnostic please
+local lua_config_dir = vim.fn.stdpath("config") .. "/lua/config"
+keymap("n", "<leader>csc", ":source $MYVIMRC<CR>", opts)
+keymap("n", "<leader>cso", ":source " .. lua_config_dir .. "/vimOpt.lua<CR>", opts)
+keymap("n", "<leader>csk", ":source " .. lua_config_dir .. "/keymap.lua<CR>", opts)
+keymap("n", "<leader>cs5", ":source %<CR>", opts)
+keymap("n", "<leader>coc", ":e $MYVIMRC<CR>", opts)
+keymap("n", "<leader>cok", ":e " .. lua_config_dir .. "/keymap.lua<CR>", opts)
+-- https://vimdoc.sourceforge.net/htmldoc/eval.html#expand()
+-- 			:p		expand to full path
+-- 			:h		head (last path component removed)
+-- 			:t		tail (last path component only)
+-- 			:r		root (one extension removed)
+-- 			:e		extension only
+-- keymap("n", "-", ":e %:h<CR>", opts) -- same as :Explore<CR> ?
+-- don't forget about :Sex, :Vex, and :Tex
+keymap("n", "-", ":Explore<CR>", opts)
+
+-- get out of the terminal
+keymap("t", "<leader>;", "<C-\\><C-n>", opts)
+keymap("t", ";;", "<C-\\><C-n>", opts)
+
+-- what
+-- keymap("n", "n", "nzz", opts)
+-- keymap("n", "N", "Nzz", opts)
+-- keymap("n", "*", "*zz", opts)
+-- keymap("n", "#", "#zz", opts)
+-- keymap("n", "g*", "g*zz", opts)
+-- keymap("n", "g#", "g#zz", opts)
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
@@ -50,9 +79,29 @@ keymap({ "n", "o", "x" }, "<s-h>", "^", opts)
 keymap({ "n", "o", "x" }, "<s-l>", "g_", opts)
 
 -- tailwind bearable to work with
-keymap({ "n", "x" }, "j", "gj", opts)
-keymap({ "n", "x" }, "k", "gk", opts)
-keymap("n", "<leader>w", ":lua vim.wo.wrap = not vim.wo.wrap<CR>", opts)
+-- keymap({ "n", "x" }, "j", "gj", opts)
+-- keymap({ "n", "x" }, "k", "gk", opts)
+-- keymap("n", "<leader>w", ":lua vim.wo.wrap = not vim.wo.wrap<CR>", opts)
 
-
-vim.api.nvim_set_keymap('t', '<C-;>', '<C-\\><C-n>', opts)
+if helpers.want("which-key") then
+  local wk = require("which-key")
+  wk.add({
+    {"<leader>h", function() print("hello") end, desc = "Debug"}
+  })
+  wk.add({
+    { "<leader>c", group = "Configuration" },
+    { "<leader>cs", group = "Apply" },
+    { "<leader>co", group = "Open" },
+  })
+ --  wk.add({
+ --     { "<leader>f", group = "file" }, -- group
+ --     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
+ --     { "<leader>fb", function() print("hello") end, desc = "Foobar" },
+ --     { "<leader>fn", desc = "New File" },
+ --     { "<leader>f1", hidden = true }, -- hide this keymap
+ --     { "<leader>w", proxy = "<c-w>", group = "windows" }, -- proxy to window mappings
+ --     { "<leader>b", group = "buffers", expand = function()
+ --         return require("which-key.extras").expand.buf()
+ --       end
+ --     },
+end
