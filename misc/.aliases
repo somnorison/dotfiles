@@ -18,6 +18,7 @@ alias bkt1m='bkt --ttl=1m'
 alias duckduckgo="cha https://html.duckduckgo.com"
 export KITTY_DOCS="$HOME/.local/kitty.app/share/doc/kitty/html"
 alias kitty_docs='cha "$KITTY_DOCS/$(ls $KITTY_DOCS | grep .html | gum choose)"'
+alias kchoose='kubectl config use-context $(gum choose $(kubectl config get-contexts -o name))'
 
 function gitamp() {
   msg="$1"
