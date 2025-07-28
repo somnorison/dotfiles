@@ -7,10 +7,14 @@ images = true
 [display]
 image-mode = "kitty"
 
+[page]
+'C-h' = 'cmd.pager.loadSubmit("about:chawan")'
+'C-k' = '() => pager.load("ddg:")'
+
 [[siteconf]]
 url = 'https://merveilles\.town/.*'
 cookie = "save"
-scription = "app"
+scripting = "app"
 
 [[siteconf]]
 url = 'http://localhost:8384/.*'
@@ -34,7 +38,8 @@ cookie = 'save'
 scripting = 'app'
 
 [[siteconf]]
-url = 'https://sr\.ht/.*'
+host = '(.*\.)?sr\.ht' # either 'something.sr.ht' or 'sr.ht'          
+# url = 'https://sr\.ht/.*'
 cookie = 'save'
 scripting = 'app'
 
@@ -44,8 +49,13 @@ scripting = 'app'
 
 [[siteconf]]
 url = 'https://stackoverflow\.com/.*'
-cookie = 'save'
-scripting = 'app'
+cookie = true
+scripting = true
+
+[[siteconf]]
+url = 'https://tex\.stackexchange\.com/.*'
+cookie = true
+scripting = true
 
 # [[siteconf]]
 # url = 'https://registry\.terraform\.io/.*'

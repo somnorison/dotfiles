@@ -22,6 +22,7 @@ export PATH="$PATH:$HOME/go/bin"
 
 export SCREENDIR="$HOME/.screen"
 export EDITOR="nvim"
+export BROWSER="cha" # use chawan browser. Needed for arch-wiki-cli
 
 export BKT_TTL=1m
 #export VIMRUNTIME=/usr/share/vim/vim81

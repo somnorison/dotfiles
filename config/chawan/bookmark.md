@@ -9,7 +9,9 @@ a.heading { display: none }
 
 ## meta
 
-* [Chawan Browser 0.1](about:chawan)
+* [About Chawan](about:chawan)
+* [Gitrepo docs](file:///home/rosin/aur/chawan/doc/)
+* [Chawan online docs](https://chawan.net/doc/cha/config.html)
 * [DuckDuckGo](https://html.duckduckgo.com/html)
 * [config](file:///home/rosin/.config/chawan/config.toml)
 * [history](file:///home/rosin/.config/chawan/history.uri)
@@ -56,3 +58,9 @@ a.heading { display: none }
 ## Systems
 
 * [The USE Method](https://www.brendangregg.com/usemethod.html)
+
+## LaTeX
+
+* [Getting started with TeX, LaTeX, and friends - TeX Users Group](https://tug.org/begin.html)
+
+

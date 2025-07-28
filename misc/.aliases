@@ -15,10 +15,21 @@ alias gitm='gits ; git commit -m'
 alias gitr='gits ; git rebase -i master'
 alias bkt1h='bkt --ttl=60m'
 alias bkt1m='bkt --ttl=1m'
-alias duckduckgo="cha https://html.duckduckgo.com"
-export KITTY_DOCS="$HOME/.local/kitty.app/share/doc/kitty/html"
+
+# export KITTY_DOCS="$HOME/.local/kitty.app/share/doc/kitty/html"
+export KITTY_DOCS="/usr/share/doc/kitty/html"
 alias kitty_docs='cha "$KITTY_DOCS/$(ls $KITTY_DOCS | grep .html | gum choose)"'
 alias kchoose='kubectl config use-context $(gum choose $(kubectl config get-contexts -o name))'
+alias arch-wiki='BROWSER=cha /usr/bin/arch-wiki'
+
+function duckduckgo() {
+  uri_stem="https://lite.duckduckgo.com/lite/?kp=-1&kd=-1&q="
+  search="$@"
+  encoded="$(printf %s "$search" | jq -sRr @uri)"
+  full_uri="${uri_stem}${encoded}"
+  echo "$full_uri"
+  cha "$full_uri"
+}
 
 function gitamp() {
   msg="$1"
