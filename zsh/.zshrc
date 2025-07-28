@@ -26,6 +26,10 @@ export BROWSER="cha" # use chawan browser. Needed for arch-wiki-cli
 
 export BKT_TTL=1m
 #export VIMRUNTIME=/usr/share/vim/vim81
+                                  
+pgrep -u "$USER" ssh-agent > /dev/null || ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+[[ -f "$SSH_AUTH_SOCK" ]] || source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
+
 
 autoload -Uz compinit
 compinit
