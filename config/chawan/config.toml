@@ -8,7 +8,7 @@ images = true
 image-mode = "kitty"
 
 [page]
-'C-h' = 'cmd.pager.loadSubmit("about:chawan")'
+'C-h' = 'pager.loadSubmit("about:chawan")'
 'C-k' = '() => pager.load("ddg:")'
 
 [[siteconf]]
