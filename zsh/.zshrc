@@ -19,6 +19,7 @@ export PATH="$PATH:$HOME/.racket/7.4/bin"
 export PATH="$PATH:$HOME/.yarn/bin"
 export PATH="$PATH:$HOME/.npm/bin"
 export PATH="$PATH:$HOME/go/bin"
+export PATH="$PATH:$HOME/bin"
 
 export SCREENDIR="$HOME/.screen"
 export EDITOR="nvim"

@@ -15,6 +15,7 @@ alias gitm='gits ; git commit -m'
 alias gitr='gits ; git rebase -i master'
 alias bkt1h='bkt --ttl=60m'
 alias bkt1m='bkt --ttl=1m'
+alias modal_repl='modal ~/bin/repl.modal'
 
 # export KITTY_DOCS="$HOME/.local/kitty.app/share/doc/kitty/html"
 export KITTY_DOCS="/usr/share/doc/kitty/html"

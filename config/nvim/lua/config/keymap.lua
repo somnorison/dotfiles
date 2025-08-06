@@ -93,6 +93,16 @@ if helpers.want("which-key") then
     { "<leader>cs", group = "Apply" },
     { "<leader>co", group = "Open" },
   })
+
+  if helpers.want("telescope") then
+    wk.add({
+      { "<leader>f", group = "Find" },
+      { "<leader>fm", "<cmd>Telescope keymaps<cr>", desc = "Mappings" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+      { "<leader>fa", "<cmd>Telescope marks<cr>", desc = "Marks" },
+    })
+  end
  --  wk.add({
  --     { "<leader>f", group = "file" }, -- group
  --     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },

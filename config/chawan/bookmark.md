@@ -64,3 +64,11 @@ a.heading { display: none }
 * [Getting started with TeX, LaTeX, and friends - TeX Users Group](https://tug.org/begin.html)
 
 
+
+## wizard zines
+
+* [wizard zines](https://wizardzines.com/)
+
+## modal
+
+* [XXIIVV — modal](https://wiki.xxiivv.com/site/modal)

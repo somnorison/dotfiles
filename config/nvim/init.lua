@@ -6,11 +6,13 @@ end
 
 helpers = require "utils.helpers"
 
+spec "plugin.whichkey"
+spec "plugin.telescope"
 
 -- spec "user.attempt"
-spec "plugin.whichkey"
 require "config.vimOpt"
 require "config.keymap"
 require "config.lazy"
 require "config.commands"
 require "config.autocmds"
+
