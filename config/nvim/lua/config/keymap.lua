@@ -101,6 +101,8 @@ if helpers.want("which-key") then
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
       { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
       { "<leader>fa", "<cmd>Telescope marks<cr>", desc = "Marks" },
+      { "<leader>f<space>", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
     })
   end
  --  wk.add({
