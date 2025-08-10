@@ -59,9 +59,10 @@ a.heading { display: none }
 
 * [The USE Method](https://www.brendangregg.com/usemethod.html)
 
-## LaTeX
+## Document stuff
 
 * [Getting started with TeX, LaTeX, and friends - TeX Users Group](https://tug.org/begin.html)
+* [Pandoc to docx: tips for myself - Rob's Blog](https://blog.roberthallam.org/2022/02/pandoc-to-docx-tips-for-myself/)
 
 
 

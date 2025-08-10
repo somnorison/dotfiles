@@ -1,6 +1,6 @@
 return {
   "folke/which-key.nvim"
-  , event = "VeryLazy" -- for things that can be loaded later, not UI essential
+  -- , event = "VeryLazy" -- for things that can be loaded later, not UI essential
   , opts = {
     -- ...
   }

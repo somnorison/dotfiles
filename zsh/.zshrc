@@ -21,6 +21,9 @@ export PATH="$PATH:$HOME/.npm/bin"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:$HOME/bin"
 
+# export LUA_PATH="$HOME/.local/lib/lua/?.lua;;"
+
+
 export SCREENDIR="$HOME/.screen"
 export EDITOR="nvim"
 export BROWSER="cha" # use chawan browser. Needed for arch-wiki-cli
@@ -79,7 +82,9 @@ zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
 zinit light trapd00r/LS_COLORS
 # source /usr/share/nvm/init-nvm.sh
 
-. "$HOME/.atuin/bin/env"
+[[ -f "$HOME/.atuin/bin/env" ]] && source "$HOME/.atuin/bin/env"
 
-eval "$(atuin init zsh)"
-eval "$(mise activate zsh)"
+type atuin >/dev/null && eval "$(atuin init zsh)"
+type mise >/dev/null && eval "$(mise activate zsh)"
+type luarocks >/dev/null && eval "$(luarocks path)"
+export LUA_PATH="$LUA_PATH;$HOME/.local/lib/lua/?.lua"
