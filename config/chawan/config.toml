@@ -56,11 +56,3 @@ scripting = true
 url = 'https://tex\.stackexchange\.com/.*'
 cookie = true
 scripting = true
-
-# [[siteconf]]
-# url = 'https://registry\.terraform\.io/.*'
-# scripting = 'app'
-
-# [[siteconf]]
-# url = 'https://registry\.terraform\.io/.*'
-# scripting = "app"
