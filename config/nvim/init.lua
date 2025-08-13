@@ -9,6 +9,8 @@ helpers = require "utils.helpers"
 spec "plugin.whichkey"
 spec "plugin.telescope"
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 -- spec "user.attempt"
 require "config.lazy"
 
