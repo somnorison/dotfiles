@@ -75,3 +75,8 @@ a.heading { display: none }
 ## modal
 
 * [XXIIVV — modal](https://wiki.xxiivv.com/site/modal)
+
+## joy
+* [XXIIVV - Joy Rewriting](https://wiki.xxiivv.com/docs/joy_rewriting.html)
+* [XXIIVV - Joy Math](https://wiki.xxiivv.com/docs/joy_math.html)
+* [XXIIVV - Joy Combinators](https://wiki.xxiivv.com/docs/joy_combinators.html)
