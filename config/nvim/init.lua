@@ -4,8 +4,8 @@ function spec(item)
   table.insert(LAZY_PLUGIN_SPEC, { import = item })
 end
 
-helpers = require "utils.helpers"
-execs = require "utils.execs"
+helpers = require "bespoke.helpers"
+execs = require "bespoke.execs"
 
 spec "plugin.whichkey"
 spec "plugin.telescope"

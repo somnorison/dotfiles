@@ -57,5 +57,5 @@ spec "user.colorscheme"
 -- this has to go AFTER telescope setup
 spec "user.attempt"
 require "config.lazy"
--- require "utils.sudowrite"
+-- require "bespoke.sudowrite"
 require "config.commands"

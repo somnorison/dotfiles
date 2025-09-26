@@ -18,7 +18,7 @@ M.current_buffer_dir = function()
   return dirname
 end
 
--- :lua helpers = helpers.reload("utils.helpers")
+-- :lua helpers = helpers.reload("bespoke.helpers")
 M.reload = function(packagename)
   package.loaded[packagename] = nil
   return require(packagename)    -- read and execute the module again from disk
