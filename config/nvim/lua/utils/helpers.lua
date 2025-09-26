@@ -1,11 +1,12 @@
 local M = {}
-M.want = function(name)                                                 
-  local out; if xpcall(                         
-      function()  out = require(name) end,           
+
+M.want = function(name)
+  local out; if xpcall(
+      function()  out = require(name) end,
       function(e) out = e end)
-  then return out          -- success                                     
-  else return nil, out end -- error                                       
-end  
+  then return out          -- success
+  else return nil, out end -- error
+end
 
   -- two ways to get buffer filename:
   -- vim.fn.expand('%')
@@ -15,6 +16,92 @@ M.current_buffer_dir = function()
   filename = vim.api.nvim_buf_get_name(0)
   dirname = filename:match("(.*[/\\])")
   return dirname
+end
+
+-- :lua helpers = helpers.reload("utils.helpers")
+M.reload = function(packagename)
+  package.loaded[packagename] = nil
+  return require(packagename)    -- read and execute the module again from disk
+end
+
+string.split = function(str, sep)
+end
+
+-- [bufnum, lnum, col, off]
+M.get_text_between = function(start_line, start_col, end_line, end_col)
+-- vim.fn.getline is inclusive
+  local lines = vim.fn.getline(start_line, end_line)
+  if start_line == end_line then
+    return lines[1]:sub(start_col, end_col)
+  elseif  start_line < end_line then
+    lines[1] = lines[1]:sub(start_col)
+    lines[#lines] = lines[#lines]:sub(0, end_col)
+    return table.concat(lines, '\n')
+  end
+end
+
+M.get_selection_points = function()
+  -- getpos returns the following table:
+  -- [bufnum, lnum, col, off]
+  local startpos = vim.fn.getpos("'<")
+  local endpos = vim.fn.getpos("'>")
+
+  -- TODO: handle not-visual mode/visual mode intelligently
+  return {startpos[2], startpos[3], endpos[2], endpos[3]}
+end
+
+M.get_selection_text = function()
+  local points = M.get_selection_points()
+  return M.get_text_between(points[1], points[2], points[3], points[4])
+end
+
+M.call_subprocess_on_range = function(cmd, start_line, start_col, end_line, end_col)
+  local result_stdout = ""
+  local buffer_text = M.get_text_between(start_line, start_col, end_line, end_col)
+  local program = vim.system(cmd, { 
+    text = true,
+    stdin = true,
+  }
+  , function(obj) result_stdout = obj.stdout end)
+  program:write(buffer_text) -- pass selection via stdin
+  program:write(nil)         -- close stream
+  program:wait()             -- block
+  return result_stdout
+end
+
+M.run = function(cmd, s)
+  local result_stdout = ""
+  local opts = { text = true, stdin = s ~= nil }
+  local program = vim.system(cmd, opts, function(obj) result_stdout = obj.stdout end)
+  if s ~= nil then
+    program:write(s)
+    program:write(nil)
+  end
+  program:wait()
+  return result_stdout
+end
+
+M.overwrite_range = function(s, start_line, start_col, end_line, end_col)
+  if start_line == end_line then
+    --print("overwriting!!!")
+    local line = vim.fn.getline(start_line)
+    local tfed = line:sub(1, start_col - 1) .. s .. line:sub(math.max(end_col, end_col + 1))
+    --print(tfed)
+    vim.fn.setline(start_line, tfed)
+  end
+end
+
+M.transform_selection = function(cmd)
+  local selection = M.get_selection_points()
+  local s1,c1,s2,c2 = unpack(selection)
+  local result = M.call_subprocess_on_range(cmd
+    , s1
+    , c1
+    , s2
+    , c2
+  )
+  M.overwrite_range(result, s1, c1, s2, c2)
+  return result
 end
 
 return M

@@ -5,9 +5,11 @@ function spec(item)
 end
 
 helpers = require "utils.helpers"
+execs = require "utils.execs"
 
 spec "plugin.whichkey"
 spec "plugin.telescope"
+spec "plugin.luaconsole"
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
