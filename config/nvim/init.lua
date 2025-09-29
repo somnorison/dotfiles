@@ -10,6 +10,7 @@ execs = require "bespoke.execs"
 spec "plugin.whichkey"
 spec "plugin.telescope"
 spec "plugin.luaconsole"
+-- spec "plugin.nvim-tree"
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "

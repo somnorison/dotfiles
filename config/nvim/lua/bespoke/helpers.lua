@@ -104,4 +104,42 @@ M.transform_selection = function(cmd)
   return result
 end
 
+M.new_guid = function() 
+  -- 8 4 4 4 12
+  local longs = {}
+  for i=1,8 do
+    longs[i] = math.random(65536)
+  end
+  return string.format(
+    "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+    unpack(longs)
+  ) 
+end
+
+M.insert_at_point = function(s)
+  local col = vim.api.nvim_win_get_cursor(0)[2] -- row, col
+  local line_text = vim.api.nvim_get_current_line()
+  local joined = line_text:sub(0, col) .. s .. line_text:sub(col + 1)
+  vim.api.nvim_set_current_line(joined)
+end
+
+M.new_guid = function() 
+  -- 8 4 4 4 12
+  local longs = {}
+  for i=1,8 do
+    longs[i] = math.random(65536)
+  end
+  return string.format(
+    "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+    unpack(longs)
+  ) 
+end
+
+M.insert_at_point = function(s)
+  local col = vim.api.nvim_win_get_cursor(0)[2] -- row, col
+  local line_text = vim.api.nvim_get_current_line()
+  local joined = line_text:sub(0, col) .. s .. line_text:sub(col + 1)
+  vim.api.nvim_set_current_line(joined)
+end
+
 return M

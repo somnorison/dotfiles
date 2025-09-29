@@ -105,6 +105,12 @@ if helpers.want("which-key") then
       { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
     })
   end
+
+  if helpers.want("nvim-tree") then
+    wk.add({
+      { "<leader>ot", "<cmd>NvimTreeToggle<cr>", desc = "Toggle Tree View" }
+    })
+  end
  --  wk.add({
  --     { "<leader>f", group = "file" }, -- group
  --     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },

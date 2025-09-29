@@ -21,6 +21,7 @@ a.heading { display: none }
 * [Expressions | Microsoft Learn](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#functions)
 * [Predefined variables | Microsoft Learn](https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops)
 * [Parameters and templateContext | Microsoft Learn](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/template-parameters?view=azure-devops)
+* [Bash@3 - Bash v3 task | Microsoft Learn](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/bash-v3?view=azure-pipelines)
 
 
 ## kitty

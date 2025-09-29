@@ -17,6 +17,9 @@ alias bkt1h='bkt --ttl=60m'
 alias bkt1m='bkt --ttl=1m'
 alias modal_repl='modal ~/bin/repl.modal'
 
+alias calendar="cd ~/uxn && uxnemu ~/uxn/calendar.rom"
+alias notepad="cd ~/uxn && uxnemu ~/uxn/notepad.rom"
+
 # export KITTY_DOCS="$HOME/.local/kitty.app/share/doc/kitty/html"
 export KITTY_DOCS="/usr/share/doc/kitty/html"
 alias kitty_docs='cha "$KITTY_DOCS/$(ls $KITTY_DOCS | grep .html | gum choose)"'
@@ -52,7 +55,7 @@ function gitamp() {
 function jumpk8s() {
   # a busybox pod named "jump" that lives for 1 hour
     local namespace="dev"
-    local spec='{"apiVersion":"v1","kind":"Pod","metadata":{"name":"jump"},"spec":{"containers":[{"name":"busybox","image":"progrium/busybox","command":["sleep","3600"]}]}}'
+    local spec='{"apiVersion":"v1","kind":"Pod","metadata":{"name":"jump"},"spec":{"containers":[{"name":"busybox","image":"progrium/busybox","imagePullPolicy": "IfNotPresent", "command":["sleep","3600"]}]}}'
     if [ -n "$1" ]; then
       namespace="$1"
     fi
@@ -61,7 +64,7 @@ function jumpk8s() {
 
     # print diagnostic stuff
     echo "using namespace $namespace for context $(kubectl config current-context)"
-    which yq >/dev/null && printf $spec | yq -y
+    which yq >/dev/null && printf $spec | yq -p json -o yaml
 
     echo "printf $spec | kubectl apply -n $namespace -f -"
     printf $spec | kubectl apply -n $namespace -f -
@@ -83,7 +86,18 @@ function k8snmapper() {
   # a pod named "nmapper" that lives for 1 hour
     local namespace="dev"
     local podname="nmapper"
-    local spec='{"apiVersion":"v1","kind":"Pod","metadata":{"name":"nmapper"},"spec":{"containers":[{"name":"nmapper","image":"instrumentisto/nmap","command":["sleep","3600"]}]}}'
+    local spec='{
+      "apiVersion":"v1",
+      "kind":"Pod",
+      "metadata":{"name":"nmapper"},
+      "spec":{"containers":[
+        {
+          "name":"nmapper",
+          "image":"instrumentisto/nmap",
+          "imagePullPolicy": "IfNotPresent",
+          "command":["sleep","3600"]
+        }
+      ]}}'
 
     if [ -n "$1" ]; then
       namespace="$1"
@@ -92,15 +106,14 @@ function k8snmapper() {
     which gum >/dev/null || return 1
     which kubectl >/dev/null || return 1
     echo "using namespace $namespace for context $(kubectl config current-context)"
-    which yq >/dev/null && printf $spec | yq -y
+    which yq >/dev/null && printf "$spec" | yq -p json -o yaml
     echo "printf $spec | kubectl apply -n $namespace -f -"
-    printf $spec | kubectl apply -n $namespace -f -
-    echo "sleeping for 10 seconds to let pod come up..."
-    gum spin --spinner moon --title "Waiting for pod" -- kubectl wait --for=condition=Ready pod/jump -n dev
+    printf "$spec" | kubectl apply -n $namespace -f -
+    gum spin --spinner moon --title "Waiting for pod $namespace/$podname" -- kubectl wait --for=condition=Ready pod/$podname -n dev
     kubectl exec -i -t -n "$namespace" "$podname" -- sh -c "clear; (bash || ash || sh)"
 
     gum confirm "delete pod ${namespace}/${podname}?" && \
-      gum spin --spinner monkey --title "Killing $namespace/jump..." -- \
+      gum spin --spinner monkey --title "Killing $namespace/$podname..." -- \
       kubectl delete pod -n "$namespace" $podname
 }
 
