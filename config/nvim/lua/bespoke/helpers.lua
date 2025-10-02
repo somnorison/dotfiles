@@ -56,6 +56,7 @@ M.get_selection_text = function()
 end
 
 M.call_subprocess_on_range = function(cmd, start_line, start_col, end_line, end_col)
+  -- Invokes a subprocess on text given by a range
   local result_stdout = ""
   local buffer_text = M.get_text_between(start_line, start_col, end_line, end_col)
   local program = vim.system(cmd, { 
@@ -66,10 +67,18 @@ M.call_subprocess_on_range = function(cmd, start_line, start_col, end_line, end_
   program:write(buffer_text) -- pass selection via stdin
   program:write(nil)         -- close stream
   program:wait()             -- block
-  return result_stdout
+  result_stripped = string.gsub(string.gsub(result_stdout, "^%s*", ""), "%s*$", "")
+  return result_stripped
+end
+
+M.call_subprocess_on_selection = function(cmd)
+  local start_line, start_col, end_line, end_col = unpack(M.get_selection_points())
+  return M.call_subprocess_on_range(cmd, start_line, start_col, end_line, end_col)
 end
 
 M.run = function(cmd, s)
+  -- invokes a subprocess.
+  -- is `s` is not nil, then attempt to write it to `cmd` stdin
   local result_stdout = ""
   local opts = { text = true, stdin = s ~= nil }
   local program = vim.system(cmd, opts, function(obj) result_stdout = obj.stdout end)
@@ -82,12 +91,24 @@ M.run = function(cmd, s)
 end
 
 M.overwrite_range = function(s, start_line, start_col, end_line, end_col)
-  if start_line == end_line then
-    --print("overwriting!!!")
+  -- overwrites the lines in a file with s
+  -- handles cases where s is a multiline string
+  s_lines = vim.split(s, "\n")
+  if start_line == end_line and #s_lines == 1 then
     local line = vim.fn.getline(start_line)
     local tfed = line:sub(1, start_col - 1) .. s .. line:sub(math.max(end_col, end_col + 1))
-    --print(tfed)
     vim.fn.setline(start_line, tfed)
+  elseif start_line == end_line and #s_lines >= 1 then
+    local line = vim.fn.getline(start_line)
+    s_lines[1] = line:sub(1, start_col - 1) .. s_lines[1]
+    s_lines[#s_lines] = s_lines[#s_lines] .. line:sub(math.max(end_col, end_col + 1))
+    vim.api.nvim_buf_set_lines(0, start_line-1, end_line, true, s_lines)
+  elseif start_line ~= end_line then
+    local first_line = vim.fn.getline(start_line)
+    local last_line = vim.fn.getline(end_line)
+    s_lines[1] = first_line:sub(1, start_col - 1) .. s_lines[1]
+    s_lines[#s_lines] = s_lines[#s_lines] .. last_line:sub(math.max(end_col, end_col + 1))
+    vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, true, s_lines)
   end
 end
 
