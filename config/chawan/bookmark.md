@@ -81,3 +81,7 @@ a.heading { display: none }
 * [XXIIVV - Joy Rewriting](https://wiki.xxiivv.com/docs/joy_rewriting.html)
 * [XXIIVV - Joy Math](https://wiki.xxiivv.com/docs/joy_math.html)
 * [XXIIVV - Joy Combinators](https://wiki.xxiivv.com/docs/joy_combinators.html)
+
+## sound
+
+* [OSC index](https://opensoundcontrol.stanford.edu/)

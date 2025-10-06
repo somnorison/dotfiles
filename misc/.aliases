@@ -350,3 +350,21 @@ function git-tidy-branches() {
 
     git branch
 }
+
+function playground-c() {
+  mkdir -p /tmp/cees
+  local INPUT="$1";
+  local FLAGS="$2";
+  local OUTPUT="$(mktemp -p /tmp/cees)"
+  local SRC="${OUTPUT}.c"
+  local txt="
+  #include <stdio.h>
+  int main(void) {
+    $INPUT
+  }"
+echo $txt > "$SRC"
+echo "$SRC :: \n$txt"
+  cc "$SRC" -o "$OUTPUT"
+  echo "::::"
+  $OUTPUT
+}
