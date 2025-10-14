@@ -6,6 +6,8 @@ end
 
 helpers = require "bespoke.helpers"
 execs = require "bespoke.execs"
+statusline = require "bespoke.statusline"
+pomodoro = require "bespoke.pomodoro"
 
 spec "plugin.whichkey"
 spec "plugin.telescope"
@@ -23,3 +25,5 @@ require "config.keymap"
 require "config.commands"
 require "config.autocmds"
 
+pomodoro.configure()
+statusline.configure()

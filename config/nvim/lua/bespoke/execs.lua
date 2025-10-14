@@ -26,4 +26,34 @@ M.embedded_svg_to_embedded_png = function()
   return embedded_png
 end
 
+M.new_guid = function() 
+  -- 8 4 4 4 12
+  local longs = {}
+  for i=1,8 do
+    longs[i] = math.random(65536)
+  end
+  s = string.format(
+    "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+    unpack(longs)
+  ) 
+  helpers.insert_at_point(s)
+  return s
+end
+
+M.date_and_date = function()
+  local endings = {
+    ["01"] = "st",
+    ["21"] = "st",
+    ["02"] = "nd",
+    ["22"] = "nd",
+    ["03"] = "rd",
+    ["23"] = "rd"
+  }
+
+  local ending = endings[os.date("%d")] or "th"
+  local s = os.date("%Y-%m-%d :: %A, %B %d" .. ending)
+  helpers.insert_at_point(s)
+  return s
+end
+
 return M

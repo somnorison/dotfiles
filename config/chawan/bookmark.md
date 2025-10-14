@@ -85,3 +85,8 @@ a.heading { display: none }
 ## sound
 
 * [OSC index](https://opensoundcontrol.stanford.edu/)
+* [paul batchelor home page](https://pbat.ch/)
+
+## contracting
+
+* [What hourly rate to charge as an independent contractor? - Bogleheads.org](https://www.bogleheads.org/forum/viewtopic.php?t=372368)
