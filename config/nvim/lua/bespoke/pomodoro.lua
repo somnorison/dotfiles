@@ -2,8 +2,6 @@ local M = {}
 
 local STOPPED = 0
 local RUNNING = 1
-local MAIN = 0
-local BREAK = 0
 
 M.data = {
   notifier = "notify-send",
@@ -14,25 +12,25 @@ M.data = {
 }
 
 M.finish = function()
-  vim.system({M.config.notifier, "Timer finished"})
-  M.config.status = STOPPED
+  M.notify("timer finished")
+  M.data.status = STOPPED
   M.data.seconds_left = 0
-  vim.notify("timer finished")
+  M.data.timer:stop()
+  vim.system({"aplay", os.getenv("HOME") .. "/dotfiles/stowage/break01.wav"})
 end
 
 M.start = function(seconds)
   if M.data.status == RUNNING then
     vim.notify("timer already running")
   else
+    vim.system({"aplay", os.getenv("HOME") .. "/dotfiles/stowage/effect01.wav"})
     M.data.status = RUNNING
     M.data.seconds_left = seconds
     M.data.timer = vim.uv.new_timer()
     M.notify("timer started")
     M.data.timer:start(1000, 0, function()
       if M.data.seconds_left < 0 then
-        M.data.timer:stop()
-        M.data.status = STOPPED
-        M.notify("timer finished")
+        M.finish()
       elseif M.data.status == RUNNING then
         M.data.seconds_left = M.data.seconds_left - 1
       end
@@ -43,6 +41,8 @@ end
 
 M.notify = function(msg)
   vim.system({M.data.notifier, msg})
+  -- vim.system({"aplay", os.getenv("HOME") .. "/dotfiles/stowage/break01.wav"})
+  -- vim.system({"aplay", os.getenv("HOME") .. "/dotfiles/stowage/effect01.wav"})
 end
 
 M.pause = function()
@@ -87,22 +87,5 @@ M.configure = function()
     })
   end
 end
--- how shall we create a pomodoro timer in neovim?
--- here is my vision: I run a command "PomoStart"
---  a timer is started for 25 minutes
---  a sound is played
--- during the timer run:
---  the status bar indicates the current time in mm:ss
--- at the end of the timer run:
---  a sound is played
---  a notification is spawned in neovim
---  a system notification is spawned
-
--- There are several pieces of the puzzle here:
--- neovim timer control -- we use the `uv.timer_*` functions
-  -- help uv.timer_
--- subprocess control   -- 
--- notifications        -- since I write for linux, I can use "notify-send"
--- statusbar control    -- hm
 
 return M
