@@ -11,7 +11,7 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 # zstyle ':completion:*' max-errors 1
 zstyle :compinstall filename "$HOME/.zshrc"
 
-export PATH="$PATH:$HOME/.scripts"
+export PATH="$PATH:$HOME/scripts"
 export PATH="$PATH:$HOME/util"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/racket/bin"
