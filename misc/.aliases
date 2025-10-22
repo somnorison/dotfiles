@@ -84,7 +84,7 @@ function jumpk8s() {
 
 function k8snmapper() {
   # a pod named "nmapper" that lives for 1 hour
-    local namespace="dev"
+    local namespace="app"
     local podname="nmapper"
     local spec='{
       "apiVersion":"v1",
@@ -93,7 +93,7 @@ function k8snmapper() {
       "spec":{"containers":[
         {
           "name":"nmapper",
-          "image":"instrumentisto/nmap",
+          "image":"jonlabelle/network-tools",
           "imagePullPolicy": "IfNotPresent",
           "command":["sleep","3600"]
         }
