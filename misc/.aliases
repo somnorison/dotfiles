@@ -71,7 +71,7 @@ function jumpk8s() {
 
     # wait for pod to be ready
     gum spin --spinner moon --title "Waiting for pod" \
-      -- kubectl wait --for=condition=Ready pod/jump -n dev
+      -- kubectl wait --for=condition=Ready pod/jump -n $namespace
 
     # get shell into pod
     kubectl exec -i -t -n "$namespace" jump -- sh -c "clear; (bash || ash || sh)"
@@ -109,7 +109,7 @@ function k8snmapper() {
     which yq >/dev/null && printf "$spec" | yq -p json -o yaml
     echo "printf $spec | kubectl apply -n $namespace -f -"
     printf "$spec" | kubectl apply -n $namespace -f -
-    gum spin --spinner moon --title "Waiting for pod $namespace/$podname" -- kubectl wait --for=condition=Ready pod/$podname -n dev
+    gum spin --spinner moon --title "Waiting for pod $namespace/$podname" -- kubectl wait --for=condition=Ready pod/$podname -n $namespace
     kubectl exec -i -t -n "$namespace" "$podname" -- sh -c "clear; (bash || ash || sh)"
 
     gum confirm "delete pod ${namespace}/${podname}?" && \

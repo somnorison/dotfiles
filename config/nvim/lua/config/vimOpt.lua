@@ -1,6 +1,6 @@
 
 vim.opt.backup = false -- creates a backup file
-vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+-- vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.cmdheight = 1 -- more space in the neovim command line for displaying messages
 vim.opt.completeopt = { "menuone", "noselect" } -- mostly just for cmp
 -- _Ideally_ I would like to see `````` but nothing else in markdown
@@ -11,7 +11,7 @@ vim.opt.ignorecase = true -- ignore case in search patterns
 -- vim.opt.mouse = "a" -- allow the mouse to be used in neovim
 vim.opt.pumheight = 10 -- pop up menu height
 vim.opt.pumblend = 10
-vim.opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
+vim.opt.showmode = true -- we don't need to see things like -- INSERT -- anymore
 vim.opt.showtabline = 1 -- always show tabs
 vim.opt.smartcase = true -- smart case
 vim.opt.smartindent = true -- make indenting smarter again

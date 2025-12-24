@@ -125,6 +125,10 @@ M.transform_selection = function(cmd)
   return result
 end
 
+M.execute_selection = function()
+  M.transform_selection({"sh", "-c"})
+end
+
 M.insert_at_point = function(s)
   local col = vim.api.nvim_win_get_cursor(0)[2] -- row, col
   local line_text = vim.api.nvim_get_current_line()
