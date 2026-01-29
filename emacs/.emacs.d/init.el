@@ -15,7 +15,7 @@
  '(custom-safe-themes
    '("7478bc74ae421ad2103d4239176f71e6d55ef0be4eb874c328b862af5b93a857" "8363207a952efb78e917230f5a4d3326b2916c63237c1f61d7e5fe07def8d378" "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516" "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24" default))
  '(package-selected-packages
-   '(magit which-key sly embark-consult consult embark marginalia markdown-mode xclip vterm evil)))
+   '(org-roam json-mode md-babel jq-mode evil-collection magit which-key sly embark-consult consult embark marginalia markdown-mode xclip vterm evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -41,7 +41,24 @@
  fill-buffer-delete-auto-save-files t
  auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves" t)))
 
-(load-file "~/.emacs.d/evil.el")
+; (load-file "~/.emacs.d/evil.el")
+
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-C-u-delete t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-d-scroll t)
+  :config
+  (require 'evil)
+  (evil-mode 1)
+  (evil-set-leader '(normal motion) (kbd "SPC"))
+  (evil-define-key '(normal motion) 'global (kbd "<leader>u") 'universal-argument))
+
+(load-file "~/.emacs.d/org.el")
+
+(use-package jq-mode
+  :ensure t)
 
 ;; this makes it possible to set the width for org images with
 ;; +ATTR_ORG :width <number>
@@ -68,6 +85,8 @@
 (evil-define-key 'insert 'global (kbd "C-j") 'evil-normal-state)
 
 
+(evil-define-key 'normal 'global (kbd "<leader>bru") 'rename-uniquely)
+(evil-define-key 'normal 'global (kbd "<leader>br<SPC>") 'rename-uniquely)
 (evil-define-key 'normal 'global "-" 'dired-jump)
 (evil-define-key 'normal dired-mode-map "-" 'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "v" 'evil-visual-state)
@@ -105,8 +124,6 @@
 (evil-define-key 'motion Buffer-menu-mode-map "u" 'Buffer-menu-unmark)
 
 
-(evil-define-key 'motion 'global (kbd "<leader>fpb") 'project-list-buffers)
-(evil-define-key 'motion 'global (kbd "<leader>fpf") 'project-list-file)
 
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -120,8 +137,18 @@
 
 (add-to-list 'custom-theme-load-path '"~/.emacs.d/themes/")
 
+
+(defun toggle-wk-toplevel () (interactive)
+				 (if (get-buffer-window " *which-key*")
+				     (kill-buffer " *which-key*")
+				     (which-key-show-top-level)))
 (use-package which-key
-  :ensure t)
+  :ensure t
+  :config
+  (which-key-mode)
+  (which-key-setup-side-window-bottom)
+    (keymap-set global-map "C-x w" 'toggle-wk-toplevel)
+    (evil-define-key '(normal motion) 'global (kbd "<leader>w") 'toggle-wk-toplevel))
 
 (use-package marginalia
   :ensure t
@@ -143,18 +170,64 @@
 (use-package magit
   :ensure t)
 
+; too heavyweight
+(use-package evil-collection
+  :after (evil magit)
+  :ensure t
+  :config
+  (evil-collection-help-setup)
+  (evil-collection-magit-setup))
+
+
 ;; C-x (something) means
 ;; "Emacs is going to turn into another program, now"
 ;; The leader keys really make sense to me in terms of a text-editing context
 
 (recentf-mode)
 ;; Leader key thing
+
+(use-package rg
+  :ensure t)
+
+(defun nremap (key-seq fun) (evil-define-key '(normal motion) 'global (kbd key-seq) fun))
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/projects/hosta/zet"))
+  :config
+  (nremap "<leader>nl" 'org-roam-buffer-toggle)
+  (nremap "<leader>nf" 'org-roam-node-find)
+  (nremap "<leader>ng" 'org-roam-graph)
+  (nremap "<leader>ni" 'org-roam-node-insert)
+  (nremap "<leader>nc" 'org-roam-capture)
+  (nremap "<leader>nj" 'org-roam-dailies-capture-today)
+  (org-roam-db-autosync-mode))
+  
+
+
+(nremap "gt" 'tab-bar-switch-to-next-tab)
+(nremap "gT" 'tab-bar-switch-to-prev-tab)
+(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
+(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
 (evil-define-key '(normal motion) 'global (kbd "<leader>fl") 'consult-goto-line)
 (evil-define-key '(normal motion) 'global (kbd "<leader>ff") 'consult-find)
 (evil-define-key '(normal motion) 'global (kbd "<leader>fb") 'consult-buffer)
-(evil-define-key '(normal motion) 'global (kbd "<leader>f SPC") 'consult-ripgrep)
-(keymap-set global-map "C-x b" 'consult-buffer)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fpb") 'project-list-buffers)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fpf") 'consult-project-buffer)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fpp") 'project-switch-project)
+
+(evil-define-key '(normal motion visual) 'global (kbd "M-.")
+  (lambda () (interactive) (repeat-complex-command 0) (minibuffer-complete-and-exit)))
+
+
+(evil-define-key '(normal motion) 'emacs-lisp-mode (kbd "<leader>ef") 'load-file)
+;(evil-define-key '(normal motion) 'emacs-lisp-mode (kbd "<leader>eb") 'eval-buffer)
+(evil-define-key '(normal motion) 'lisp-data-mode (kbd "<leader>ef") 'load-file)
+;(evil-define-key '(normal motion) 'lisp-data-mode (kbd "<leader>eb") 'eval-buffer)
 (setf minibuffer-visible-completions nil) ; this fixes the annoying minibuffer error popup?
+
+(evil-define-key '(normal) 'common-lisp-mode (kbd "<leader> e SPC") 'sly-eval-defun)
 ;; to leader key or not to leader key?
 ;; basically whatever I do will end up feeling natural, so just go for it
 ;; My basic idiom is <leader><key><leader> does "the obvious thing"
@@ -179,5 +252,3 @@
 ;; Replace "sbcl" with the path to your implementation
 (use-package embark-consult
   :ensure t)
-
-

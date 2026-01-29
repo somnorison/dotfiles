@@ -368,3 +368,19 @@ echo "$SRC :: \n$txt"
   echo "::::"
   $OUTPUT
 }
+
+function log_err() {
+    gum log -l error $1
+    return 1
+}
+
+function reload_firefox() {
+    which xdotool || return 1
+    CURRENT_WINDOW=$(xdotool getactivewindow)
+    KEY="CTRL+R"
+    BROWSER="Firefox"
+    xdotool search --desktop 0 ${BROWSER} windowactivate
+    xdotool key ${KEY}
+    xdotool windowfocus --sync ${CURRENT_WINDOW}
+    xdotool windowactivate --sync ${CURRENT_WINDOW}
+}
