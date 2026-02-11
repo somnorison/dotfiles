@@ -7,15 +7,24 @@
   (package-install 'use-package))
 (require 'use-package)
 
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("7478bc74ae421ad2103d4239176f71e6d55ef0be4eb874c328b862af5b93a857" "8363207a952efb78e917230f5a4d3326b2916c63237c1f61d7e5fe07def8d378" "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516" "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24" default))
+   '("7478bc74ae421ad2103d4239176f71e6d55ef0be4eb874c328b862af5b93a857"
+     "8363207a952efb78e917230f5a4d3326b2916c63237c1f61d7e5fe07def8d378"
+     "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516"
+     "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24"
+     default))
  '(package-selected-packages
-   '(org-roam json-mode md-babel jq-mode evil-collection magit which-key sly embark-consult consult embark marginalia markdown-mode xclip vterm evil)))
+   '(consult embark embark-consult evil evil-collection interaction-log
+	     jq-mode json-mode magit marginalia markdown-mode md-babel
+	     org-roam sly vterm which-key xclip))
+ '(package-vc-selected-packages
+   '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -23,6 +32,10 @@
  ;; If there is more than one, they won't work right.
  )
 
+
+
+
+;; emacs nicer init
 
 
 ;; backup stuff
@@ -43,6 +56,8 @@
 
 ; (load-file "~/.emacs.d/evil.el")
 
+(menu-bar-mode -1)
+
 (use-package evil
   :ensure t
   :init
@@ -55,7 +70,29 @@
   (evil-set-leader '(normal motion) (kbd "SPC"))
   (evil-define-key '(normal motion) 'global (kbd "<leader>u") 'universal-argument))
 
+; too heavyweight
+(use-package evil-collection
+  :after (evil magit)
+  :ensure t
+  :config
+  (evil-collection-help-setup)
+  (evil-collection-info-setup)
+  (evil-collection-dired-setup)
+  (evil-collection-magit-setup))
+
+(evil-define-key 'normal 'global (kbd "<leader> l t") 'interaction-log-mode)
+(evil-define-key 'normal 'global (kbd "<leader> l b") 'ilog-show-in-new-frame)
+(setq tab-always-indent 'complete)
+(evil-define-key 'normal 'global (kbd "<leader> f i")
+  (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
+
+; (evil-define-key 'insert 'global (kbd "<tab>") 'completion-at-point)
+; (evil-define-key 'insert vterm-mode-map (kbd "<tab>") 'vterm-send-tab)
+; (add-hook 'vterm-mode-hook (lambda () (evil-local-set-key 'insert (kbd "<tab>") 'vterm-send-tab)))
+
 (load-file "~/.emacs.d/org.el")
+
+(use-package interaction-log)
 
 (use-package jq-mode
   :ensure t)
@@ -85,8 +122,11 @@
 (evil-define-key 'insert 'global (kbd "C-j") 'evil-normal-state)
 
 
+;(evil-define-key 'normal org-mode-map "zo" 'org-fold-show-children)
+;(evil-define-key 'normal org-mode-map "zO" 'org-fold-show-all)
+(evil-define-key 'normal org-mode-map "zz" 'org-cycle)
 (evil-define-key 'normal 'global (kbd "<leader>bru") 'rename-uniquely)
-(evil-define-key 'normal 'global (kbd "<leader>br<SPC>") 'rename-uniquely)
+(evil-define-key 'normal 'global (kbd "<leader>brr") 'rename-buffer)
 (evil-define-key 'normal 'global "-" 'dired-jump)
 (evil-define-key 'normal dired-mode-map "-" 'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "v" 'evil-visual-state)
@@ -168,15 +208,12 @@
   (evil-define-key '(normal motion) 'global "gl" 'consult-goto-line))
 
 (use-package magit
-  :ensure t)
-
-; too heavyweight
-(use-package evil-collection
-  :after (evil magit)
   :ensure t
-  :config
-  (evil-collection-help-setup)
-  (evil-collection-magit-setup))
+  :bind (:map magit-file-section-map
+	      ("RET" . magit-diff-visit-file-other-window)
+	      :map magit-hunk-section-map
+	      ("RET" . magit-diff-visit-file-other-window)))
+
 
 
 ;; C-x (something) means
@@ -194,7 +231,7 @@
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory (file-truename "~/projects/hosta/zet"))
+  (org-roam-directory (file-truename "~/zetta"))
   :config
   (nremap "<leader>nl" 'org-roam-buffer-toggle)
   (nremap "<leader>nf" 'org-roam-node-find)
@@ -204,7 +241,6 @@
   (nremap "<leader>nj" 'org-roam-dailies-capture-today)
   (org-roam-db-autosync-mode))
   
-
 
 (nremap "gt" 'tab-bar-switch-to-next-tab)
 (nremap "gT" 'tab-bar-switch-to-prev-tab)
@@ -227,6 +263,10 @@
 ;(evil-define-key '(normal motion) 'lisp-data-mode (kbd "<leader>eb") 'eval-buffer)
 (setf minibuffer-visible-completions nil) ; this fixes the annoying minibuffer error popup?
 
+
+(evil-define-key 'normal 'global (kbd "C-h C-c") (lambda () (interactive) (message "never again")))
+(evil-define-key '(normal motion) 'global (kbd "<leader> d SPC") (lambda () (interactive) (message "haha ha!")))
+(evil-define-key '(normal motion) 'emacs-lisp-mode (kbd "<leader> e SPC") 'eval-defun)
 (evil-define-key '(normal) 'common-lisp-mode (kbd "<leader> e SPC") 'sly-eval-defun)
 ;; to leader key or not to leader key?
 ;; basically whatever I do will end up feeling natural, so just go for it

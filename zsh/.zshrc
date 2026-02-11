@@ -20,6 +20,7 @@ export PATH="$PATH:$HOME/.yarn/bin"
 export PATH="$PATH:$HOME/.npm/bin"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # export LUA_PATH="$HOME/.local/lib/lua/?.lua;;"
 
@@ -90,4 +91,3 @@ type luarocks >/dev/null && eval "$(luarocks path)"
 export LUA_PATH="$LUA_PATH;$HOME/.local/lib/lua/?.lua"
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /home/rosin/.local/share/mise/installs/terramate/0.14.2/terramate terramate
