@@ -90,7 +90,7 @@
 ; (evil-define-key 'insert vterm-mode-map (kbd "<tab>") 'vterm-send-tab)
 ; (add-hook 'vterm-mode-hook (lambda () (evil-local-set-key 'insert (kbd "<tab>") 'vterm-send-tab)))
 
-(load-file "~/.emacs.d/org.el")
+(load-file "~/.emacs.d/configuration/org.el")
 
 (use-package interaction-log)
 

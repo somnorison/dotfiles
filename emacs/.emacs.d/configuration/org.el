@@ -1,0 +1,10 @@
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((lisp . t)
+   (jq . t)
+   (shell . t)
+   (lua .t)))
+
+(setq org-babel-lisp-eval-fn #'sly-eval)
+; https://orgmode.org/manual/Results-of-Evaluation.html
+(setq org-babel-default-header-args '((:results . "output drawer")))
