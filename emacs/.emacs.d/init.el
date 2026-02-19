@@ -1,11 +1,31 @@
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+;;; delete package.el init
+;;; (require 'package)
+;;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;;; (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
+;;; (unless (package-installed-p 'use-package)
+;;;   (package-refresh-contents)
+;;;   (package-install 'use-package))
+;;; (require 'use-package)
+
+(defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 
 (custom-set-variables
@@ -19,12 +39,11 @@
      "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516"
      "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24"
      default))
+ '(markdown-command "pandoc")
  '(package-selected-packages
    '(consult embark embark-consult evil evil-collection interaction-log
 	     jq-mode json-mode magit marginalia markdown-mode md-babel
-	     org-roam sly vterm which-key xclip))
- '(package-vc-selected-packages
-   '((beads :url "https://codeberg.org/ctietze/beads.el" :lisp-dir "lisp"))))
+	     org-roam sly vterm which-key xclip)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -59,7 +78,6 @@
 (menu-bar-mode -1)
 
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-C-u-delete t)
   (setq evil-want-C-u-scroll t)
@@ -73,7 +91,6 @@
 ; too heavyweight
 (use-package evil-collection
   :after (evil magit)
-  :ensure t
   :config
   (evil-collection-help-setup)
   (evil-collection-info-setup)
@@ -90,30 +107,25 @@
 ; (evil-define-key 'insert vterm-mode-map (kbd "<tab>") 'vterm-send-tab)
 ; (add-hook 'vterm-mode-hook (lambda () (evil-local-set-key 'insert (kbd "<tab>") 'vterm-send-tab)))
 
-(load-file "~/.emacs.d/configuration/org.el")
 
 (use-package interaction-log)
 
-(use-package jq-mode
-  :ensure t)
+(use-package jq-mode )
+
 
 ;; this makes it possible to set the width for org images with
 ;; +ATTR_ORG :width <number>
 (setq org-image-actual-width '(768))
 
-(use-package vterm
-  :ensure t)
+(use-package vterm)
 
 (use-package xclip
-  :ensure t
   :config
   (xclip-mode 1))
 
-(use-package markdown-mode
-  :ensure t)
+(use-package markdown-mode )
 
 (use-package exotica-theme
-  :ensure t
   :config
   (load-theme 'exotica t))
 
@@ -183,7 +195,6 @@
 				     (kill-buffer " *which-key*")
 				     (which-key-show-top-level)))
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode)
   (which-key-setup-side-window-bottom)
@@ -191,24 +202,23 @@
     (evil-define-key '(normal motion) 'global (kbd "<leader>w") 'toggle-wk-toplevel))
 
 (use-package marginalia
-  :ensure t
   :config
   (marginalia-mode))
 
 (use-package embark
-  :ensure t
   :bind
   (("C-." . embark-act)
    ("C-;" . embark-dwim)
    ("C-h B" . embark-bindings)))
 
 (use-package consult
-  :ensure t
+  :bind
+  ("C-x b" . consult-buffer)
+  ("C-x C-f" . consult-find)
   :config
   (evil-define-key '(normal motion) 'global "gl" 'consult-goto-line))
 
 (use-package magit
-  :ensure t
   :bind (:map magit-file-section-map
 	      ("RET" . magit-diff-visit-file-other-window)
 	      :map magit-hunk-section-map
@@ -223,22 +233,21 @@
 (recentf-mode)
 ;; Leader key thing
 
-(use-package rg
-  :ensure t)
+(use-package rg)
 
 (defun nremap (key-seq fun) (evil-define-key '(normal motion) 'global (kbd key-seq) fun))
 
 (use-package org-roam
-  :ensure t
   :custom
   (org-roam-directory (file-truename "~/zetta"))
+  :bind
+  ("C-c n l" . org-roam-buffer-toggle)
+  ("C-c n f" . org-roam-node-find)
+  ("C-c n g" . org-roam-graph)
+  ("C-c n i" . org-roam-node-insert)
+  ("C-c n c" . org-roam-capture)
+  ("C-c n j" . org-roam-dailies-capture-today)
   :config
-  (nremap "<leader>nl" 'org-roam-buffer-toggle)
-  (nremap "<leader>nf" 'org-roam-node-find)
-  (nremap "<leader>ng" 'org-roam-graph)
-  (nremap "<leader>ni" 'org-roam-node-insert)
-  (nremap "<leader>nc" 'org-roam-capture)
-  (nremap "<leader>nj" 'org-roam-dailies-capture-today)
   (org-roam-db-autosync-mode))
   
 
@@ -282,7 +291,6 @@
 (evil-define-key '(normal motion) 'global "." 'evil-jump-forward)
 
 (use-package sly
-  :ensure t
   :config
   (require 'sly)
   (setq inferior-lisp-program "sbcl"))
@@ -290,5 +298,24 @@
 ;   (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;   (setq inferior-lisp-program "sbcl"))
 ;; Replace "sbcl" with the path to your implementation
-(use-package embark-consult
-  :ensure t)
+(use-package embark-consult )
+
+(load-file "~/.emacs.d/configuration/org.el")
+
+(use-package pomm
+  :straight t
+  :commands (pomm pomm-third-time)
+  :config
+  (setq alert-default-style 'libnotify
+	pomm-audio-enabled t
+	pomm-audio-tick-enabled nil
+	pomm-audio-player-executable "aplay")
+  (pomm-mode-line-mode)
+  :bind
+  ("C-c p" . pomm-third-time))
+;; https://yiufung.net/post/emacs-key-binding-conventions-and-why-you-should-try-it/
+
+;; Keybind Conventions
+;; C-x: system commands, these should be globally available.
+;; C-c C-{something}: major mode
+;; C-c {something}: minor mode
