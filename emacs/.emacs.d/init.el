@@ -39,11 +39,7 @@
      "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516"
      "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24"
      default))
- '(markdown-command "pandoc")
- '(package-selected-packages
-   '(consult embark embark-consult evil evil-collection interaction-log
-	     jq-mode json-mode magit marginalia markdown-mode md-babel
-	     org-roam sly vterm which-key xclip)))
+ '(markdown-command "pandoc"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -306,6 +302,8 @@
   :straight t
   :commands (pomm pomm-third-time)
   :config
+  (make-directory "~/zetta/data" t)
+  (setq pomm-third-time-csv-history-file "~/zetta/data/time.csv")
   (setq alert-default-style 'libnotify
 	pomm-audio-enabled t
 	pomm-audio-tick-enabled nil
