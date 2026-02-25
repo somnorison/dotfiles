@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/zsh
 
 SHELLRC="$HOME/.zshrc"
 BROWSER="firefox"
@@ -17,8 +17,30 @@ alias bkt1h='bkt --ttl=60m'
 alias bkt1m='bkt --ttl=1m'
 alias modal_repl='modal ~/bin/repl.modal'
 
-alias calendar="cd ~/uxn && uxnemu ~/uxn/calendar.rom"
-alias notepad="cd ~/uxn && uxnemu ~/uxn/notepad.rom"
+function exists-f() {
+  if [ ! -f "$1" ]; then
+    printf "no such file $1" 1&>2;
+    return 1;
+  fi
+  return 0;
+}
+
+function uxnrun() {
+  local tal="$1"
+  local rom="${tal%.tal}.rom"
+  exists-f "$tal" || return 1;
+  uxnasm "$tal" "$rom" && uxnemu "$rom"
+}
+
+function uxndbg() {
+  local tal="$1"
+  local rom="${tal%.tal}.rom"
+  exists-f "$tal" || return 1;
+  uxnasm "$tal" "$rom" && uxnemu -2x ~/roms/beetbug.rom "$rom"
+}
+
+alias calendar="cd ~/uxn && uxnemu ~/uxn/roms/calendar.rom"
+alias notepad="cd ~/uxn && uxnemu ~/uxn/roms/notepad.rom"
 
 # export KITTY_DOCS="$HOME/.local/kitty.app/share/doc/kitty/html"
 export KITTY_DOCS="/usr/share/doc/kitty/html"

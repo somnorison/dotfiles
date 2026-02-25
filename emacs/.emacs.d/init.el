@@ -39,7 +39,8 @@
      "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516"
      "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24"
      default))
- '(markdown-command "pandoc"))
+ '(markdown-command "pandoc")
+ '(package-vc-selected-packages 'nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -123,7 +124,8 @@
 
 (use-package exotica-theme
   :config
-  (load-theme 'exotica t))
+					;(load-theme 'exotica t)
+  )
 
 
 ;; general
@@ -295,6 +297,7 @@
 ;   (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;   (setq inferior-lisp-program "sbcl"))
 ;; Replace "sbcl" with the path to your implementation
+
 (use-package embark-consult )
 
 (load-file "~/.emacs.d/configuration/org.el")
@@ -323,3 +326,10 @@
       '(("\\.\\(png\\|jpe?g\\|tiff\\)$" "feh" "xdg-open")
 	("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
 	(".*" "xdg-open")))
+
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+(setq mode-line-end-spaces nil)
+
+(load-file "~/.emacs.d/configuration/org.el")
+;(load-theme "wheatgrass")
+(setq initial-buffer-choice 'scratch-buffer)

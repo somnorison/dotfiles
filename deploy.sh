@@ -24,6 +24,11 @@ echo
 stowcmd lem
 echo
 stow -t "$HOME/.config" --verbose=2 config
+echo
+unzip "$(ls fonts/*.zip)" -d fonts -f
+mkdir -pv ~/.local/share/fonts
+stow --verbose=2 -t "$HOME/.local/share/fonts" fonts
+
 
 # mkdir -pv vim/.vim/backup
 # mkdir -pv vim/.vim/undo
