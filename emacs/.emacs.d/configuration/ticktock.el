@@ -62,7 +62,9 @@ If it cannot locate the heading named \"* time\" in that file, it creates one an
    ;;- context : a string describing the topic of the time.
    ;;          :  May include an optional note section delineated by the sequence \"::\"
    ;;          :  (for example, \"emacs :: working on insert-time-today\")
-(defun ticktock--insert-pomm-third-time-today ()
+(defvar ticktock--current-start (current-time))
+(defun ticktock--toggle ()
+  ;; this needs to get the last iteration's start time if we go to break.
 
   (pcase-let* ((status (alist-get 'status pomm-third-time--state))
          (kind (alist-get 'kind (alist-get 'current pomm-third-time--state)))
@@ -70,16 +72,17 @@ If it cannot locate the heading named \"* time\" in that file, it creates one an
 	 (`(,topic ,note) (string-split ctx "::" t "[ ]+"))
          (active-p (and (eq kind 'work)
                         (eq status 'running)))
-	(start-time (alist-get 'start-time (alist-get 'current pomm-third-time--state)))
-	(start-time-fmt (format-time-string "%H:%M" (seconds-to-time start-time)))
+	(start-time-fmt (format-time-string "%H:%M" ticktock--current-start))
 	(end-time-fmt (format-time-string "%H:%M" (current-time))))
 
     ;(ticktock--insert-time-today start-time end-time topic-note)
     (if (not active-p)
-	(progn (message "[debug] :: inserting time %s->%s %s %s" status kind start-time-fmt end-time-fmt topic note)
-	       (ticktock--insert-time-today start-time-fmt end-time-fmt topic note))
-      (message "[debug] :: we're still running, debouncing"))))
+	(progn
+	  (message "[debug] :: inserting time %s->%s %s %s" status kind start-time-fmt end-time-fmt topic note)
+	  (ticktock--insert-time-today start-time-fmt end-time-fmt topic note))
+      (progn
+	(setf ticktock--current-start (current-time))
+	(message "[debug] :: update current-start to %H:%M")))))
 
-(add-hook 'pomm-third-time-on-status-changed-hook #'ticktock--insert-pomm-third-time-today)
+(add-hook 'pomm-third-time-on-status-changed-hook #'ticktock--toggle)
 
-(provide 'ticktock)
