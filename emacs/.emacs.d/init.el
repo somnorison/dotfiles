@@ -282,22 +282,14 @@
 
 (nremap "gt" 'tab-bar-switch-to-next-tab)
 (nremap "gT" 'tab-bar-switch-to-prev-tab)
-(evil-define-key '(normal motion) 'global
-  "gt" 'tab-bar-switch-to-next-tab)
-(evil-define-key '(normal motion) 'global
-  "gt" 'tab-bar-switch-to-next-tab)
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader>fl") 'consult-goto-line)
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader>ff") 'consult-find)
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader>fb") 'consult-buffer)
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader>fpb") 'project-list-buffers)
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader>fpf") 'consult-project-buffer)
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader>fpp") 'project-switch-project)
+(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
+(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fl") 'consult-goto-line)
+(evil-define-key '(normal motion) 'global (kbd "<leader>ff") 'consult-find)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fb") 'consult-buffer)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fpb") 'project-list-buffers)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fpf") 'consult-project-buffer)
+(evil-define-key '(normal motion) 'global (kbd "<leader>fpp") 'project-switch-project)
 
 (evil-define-key '(normal motion visual) 'global
   (kbd "M-.")
@@ -329,8 +321,7 @@
 ;; my modal zap. Repetitions should zap things in obvious ways.
 
 ;; minibuffer stuff
-(keymap-set minibuffer-local-must-match-map "C-j"
-	    'minibuffer-next-completion)
+(keymap-set minibuffer-local-must-match-map "C-j" 'minibuffer-next-completion)
 (keymap-set minibuffer-local-map "C-l" 'minibuffer-complete-and-exit)
 (keymap-set minibuffer-local-map "C-k" 'minibuffer-previous-completion)
 (keymap-set minibuffer-local-map "C-w" 'evil-delete-backward-word)
