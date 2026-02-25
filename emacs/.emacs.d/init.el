@@ -354,6 +354,7 @@
   (pomm-mode-line-mode)
   :bind
   ("C-c p" . pomm-third-time))
+
 ;; https://yiufung.net/post/emacs-key-binding-conventions-and-why-you-should-try-it/
 
 ;; Keybind Conventions
@@ -370,5 +371,21 @@
 (setq mode-line-end-spaces nil)
 
 (load-file "~/.emacs.d/configuration/org.el")
-;(load-theme "wheatgrass")
+(load-file "~/.emacs.d/configuration/ticktock.el")
+;; TODO: create a straight.el recipe to load ticktock
+;; only after we've installed/loaded pomm and org-roam
+;; https://github.com/radian-software/straight.el
+;; Another idea would be creating a dummy-target recipe
+;; and using that to load a configuration file
+;; This doesn't work, sadge
+;; (straight-use-package '(dummy :type nil) t t)
+;; (use-package t
+;;   :no-require t
+;;   :after (org-roam pomm)
+;;   :config (load-file "~/.emacs.d/configuration/ticktock.el"))
+
+;; (load-theme "wheatgrass")
 (setq initial-buffer-choice 'scratch-buffer)
+
+
+
