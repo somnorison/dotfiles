@@ -243,6 +243,7 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n c" . org-roam-capture)
   ("C-c n j" . org-roam-dailies-capture-today)
+  ("C-c n t" . org-roam-dailies-goto-today)
   :config
   (org-roam-db-autosync-mode))
   
@@ -300,7 +301,7 @@
 
 (use-package pomm
   :straight t
-  :commands (pomm pomm-third-time)
+  :commands (pomm-third-time)
   :config
   (make-directory "~/zetta/data" t)
   (setq pomm-third-time-csv-history-file "~/zetta/data/time.csv")
@@ -317,3 +318,8 @@
 ;; C-x: system commands, these should be globally available.
 ;; C-c C-{something}: major mode
 ;; C-c {something}: minor mode
+
+(setq dired-guess-shell-alist-user
+      '(("\\.\\(png\\|jpe?g\\|tiff\\)$" "feh" "xdg-open")
+	("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
+	(".*" "xdg-open")))
