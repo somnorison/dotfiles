@@ -26,7 +26,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 
 
 export SCREENDIR="$HOME/.screen"
-export EDITOR="nvim"
+export EDITOR="emacsclient -nw"
 export BROWSER="cha" # use chawan browser. Needed for arch-wiki-cli
 
 export BKT_TTL=1m

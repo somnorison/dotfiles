@@ -82,7 +82,7 @@ If it cannot locate the heading named \"* time\" in that file, it creates one an
 	  (ticktock--insert-time-today start-time-fmt end-time-fmt topic note))
       (progn
 	(setf ticktock--current-start (current-time))
-	(message "[debug] :: update current-start to %H:%M")))))
+	(message "[debug] :: update current-start")))))
 
 (add-hook 'pomm-third-time-on-status-changed-hook #'ticktock--toggle)
 

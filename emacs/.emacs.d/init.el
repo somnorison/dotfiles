@@ -74,30 +74,30 @@
 
 (menu-bar-mode -1)
 
-(use-package evil
-  :init
-  (setq evil-want-C-u-delete t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-d-scroll t)
-  :config
-  (require 'evil)
-  (evil-mode 1)
-  (evil-set-leader '(normal motion) (kbd "SPC"))
-  (evil-define-key '(normal motion) 'global
-    (kbd "<leader>u") 'universal-argument)
-  (evil-define-key 'normal 'global
-    (kbd "<leader> f i")
-    (lambda () (interactive) (find-file "~/.emacs.d/init.el"))))
+;; (use-package evil
+;;   :init
+;;   (setq evil-want-C-u-delete t)
+;;   (setq evil-want-C-u-scroll t)
+;;   (setq evil-want-C-d-scroll t)
+;;   :config
+;;   (require 'evil)
+;;   (evil-mode 1)
+;;   (evil-set-leader '(normal motion) (kbd "SPC"))
+;;   (evil-define-key '(normal motion) 'global
+;;     (kbd "<leader>u") 'universal-argument)
+;;   (evil-define-key 'normal 'global
+;;     (kbd "<leader> f i")
+;;     (lambda () (interactive) (find-file "~/.emacs.d/init.el"))))
 
 ; too heavyweight
-(use-package evil-collection
-  :after
-  (evil magit)
-  :config
-  (evil-collection-help-setup)
-  (evil-collection-info-setup)
-  (evil-collection-dired-setup)
-  (evil-collection-magit-setup))
+;; (use-package evil-collection
+;;   :after
+;;   (evil magit)
+;;   :config
+;;   (evil-collection-help-setup)
+;;   (evil-collection-info-setup)
+;;   (evil-collection-dired-setup)
+;;   (evil-collection-magit-setup))
 
 
 (setq tab-always-indent 'complete)
@@ -107,14 +107,15 @@
 ; (add-hook 'vterm-mode-hook (lambda () (evil-local-set-key 'insert (kbd "<tab>") 'vterm-send-tab)))
 
 
-(use-package interaction-log
-  :after
-  (evil)
-  :config
-  (evil-define-key 'normal 'global
-    (kbd "<leader> l t") 'interaction-log-mode)
-  (evil-define-key 'normal 'global
-    (kbd "<leader> l b") 'ilog-show-in-new-frame))
+(use-package interaction-log)
+  ;; :after
+
+  ;; (evil)
+  ;; :config
+  ;;(evil-define-key 'normal 'global
+  ;;  (kbd "<leader> l t") 'interaction-log-mode)
+  ;;(evil-define-key 'normal 'global
+  ;;  (kbd "<leader> l b") 'ilog-show-in-new-frame))
 
 (use-package jq-mode )
 
@@ -138,64 +139,64 @@
 
 
 ;; general
-(evil-define-key 'insert 'global (kbd "C-j") 'evil-normal-state)
+;;(evil-define-key 'insert 'global (kbd "C-j") 'evil-normal-state)
 
 
 ;(evil-define-key 'normal org-mode-map "zo" 'org-fold-show-children)
 ;(evil-define-key 'normal org-mode-map "zO" 'org-fold-show-all)
-(evil-define-key 'normal org-mode-map "zz" 'org-cycle)
-(evil-define-key 'normal 'global (kbd "<leader>bru") 'rename-uniquely)
-(evil-define-key 'normal 'global (kbd "<leader>brr") 'rename-buffer)
-(evil-define-key 'normal 'global "-" 'dired-jump)
-(evil-define-key 'normal dired-mode-map "-" 'dired-up-directory)
-(evil-define-key 'normal dired-mode-map "v" 'evil-visual-state)
-(evil-define-key 'normal dired-mode-map "%" 'dired-create-empty-file)
-(evil-define-key 'normal dired-mode-map "d" 'dired-create-directory)
+;;(evil-define-key 'normal org-mode-map "zz" 'org-cycle)
+;;(evil-define-key 'normal 'global (kbd "<leader>bru") 'rename-uniquely)
+;;(evil-define-key 'normal 'global (kbd "<leader>brr") 'rename-buffer)
+;;(evil-define-key 'normal 'global "-" 'dired-jump)
+;;(evil-define-key 'normal dired-mode-map "-" 'dired-up-directory)
+;;(evil-define-key 'normal dired-mode-map "v" 'evil-visual-state)
+;;(evil-define-key 'normal dired-mode-map "%" 'dired-create-empty-file)
+;;(evil-define-key 'normal dired-mode-map "d" 'dired-create-directory)
 
-(evil-define-key 'normal markdown-mode-map
-  (kbd "<leader>z") 'markdown-table-align)
+;; (evil-define-key 'normal markdown-mode-map
+;;   (kbd "<leader>z") 'markdown-table-align)
 
 ;; vterm bindings
-(evil-define-key 'normal vterm-mode-map
-  "h" '(lambda () (interactive) (vterm-send "<left>")))
-(evil-define-key 'normal vterm-mode-map
-  "l" '(lambda () (interactive) (vterm-send "<right>")))
-(evil-define-key 'normal vterm-mode-map
-  (kbd "<leader>k") '(lambda () (interactive) (vterm-send "<up>")))
-(evil-define-key 'normal vterm-mode-map
-  (kbd "<leader>j") '(lambda () (interactive) (vterm-send "<down>")))
-(evil-define-key 'normal vterm-mode-map
-  (kbd "<leader><escape>") 'vterm-send-escape)
-(evil-define-key 'normal vterm-mode-map
-  "b" '(lambda () (interactive) (vterm-send "M-b")))
-(evil-define-key 'normal vterm-mode-map
-  "e" '(lambda () (interactive) (vterm-send "M-f")))
-(evil-define-key 'normal vterm-mode-map "x" 'vterm-send-delete)
-(evil-define-key 'normal vterm-mode-map
-  "<backspace>" 'vterm-send-backspace)
-(evil-define-key 'normal vterm-mode-map
-  "db" '(lambda () (interactive) (vterm-send "C-w")))
-(evil-define-key 'normal vterm-mode-map
-  "dw" '(lambda () (interactive) (vterm-send "M-d")))
-(evil-define-key 'normal vterm-mode-map "p" 'vterm-yank)
-(evil-define-key 'normal vterm-mode-map
-  "P" '(lambda ()
-                                               (interactive)
-                                               (vterm-send-C-b)
-                                               (vterm-yank)))
-
-(evil-define-key '(insert normal) vterm-mode-map
-  (kbd "M-RET") 'vterm-send-next-key)
-
-;; Buffer menu things
-(evil-define-key 'motion Buffer-menu-mode-map
-  (kbd "RET") 'Buffer-menu-this-window)
-(evil-define-key 'motion Buffer-menu-mode-map
-  ">" 'Buffer-menu-other-window)
-(evil-define-key 'motion Buffer-menu-mode-map "q" 'quit-window)
-(evil-define-key 'motion Buffer-menu-mode-map "." 'Buffer-menu-select)
-(evil-define-key 'motion Buffer-menu-mode-map "m" 'Buffer-menu-mark)
-(evil-define-key 'motion Buffer-menu-mode-map "u" 'Buffer-menu-unmark)
+;; (evil-define-key 'normal vterm-mode-map
+;;   "h" '(lambda () (interactive) (vterm-send "<left>")))
+;; (evil-define-key 'normal vterm-mode-map
+;;   "l" '(lambda () (interactive) (vterm-send "<right>")))
+;; (evil-define-key 'normal vterm-mode-map
+;;   (kbd "<leader>k") '(lambda () (interactive) (vterm-send "<up>")))
+;; (evil-define-key 'normal vterm-mode-map
+;;   (kbd "<leader>j") '(lambda () (interactive) (vterm-send "<down>")))
+;; (evil-define-key 'normal vterm-mode-map
+;;   (kbd "<leader><escape>") 'vterm-send-escape)
+;; (evil-define-key 'normal vterm-mode-map
+;;   "b" '(lambda () (interactive) (vterm-send "M-b")))
+;; (evil-define-key 'normal vterm-mode-map
+;;   "e" '(lambda () (interactive) (vterm-send "M-f")))
+;; (evil-define-key 'normal vterm-mode-map "x" 'vterm-send-delete)
+;; (evil-define-key 'normal vterm-mode-map
+;;   "<backspace>" 'vterm-send-backspace)
+;; (evil-define-key 'normal vterm-mode-map
+;;   "db" '(lambda () (interactive) (vterm-send "C-w")))
+;; (evil-define-key 'normal vterm-mode-map
+;;   "dw" '(lambda () (interactive) (vterm-send "M-d")))
+;; (evil-define-key 'normal vterm-mode-map "p" 'vterm-yank)
+;; (evil-define-key 'normal vterm-mode-map
+;;   "P" '(lambda ()
+;;                                                (interactive)
+;;                                                (vterm-send-C-b)
+;;                                                (vterm-yank)))
+;; 
+;; (evil-define-key '(insert normal) vterm-mode-map
+;;   (kbd "M-RET") 'vterm-send-next-key)
+;; 
+;; ;; Buffer menu things
+;; (evil-define-key 'motion Buffer-menu-mode-map
+;;   (kbd "RET") 'Buffer-menu-this-window)
+;; (evil-define-key 'motion Buffer-menu-mode-map
+;;   ">" 'Buffer-menu-other-window)
+;; (evil-define-key 'motion Buffer-menu-mode-map "q" 'quit-window)
+;; (evil-define-key 'motion Buffer-menu-mode-map "." 'Buffer-menu-select)
+;; (evil-define-key 'motion Buffer-menu-mode-map "m" 'Buffer-menu-mark)
+;; (evil-define-key 'motion Buffer-menu-mode-map "u" 'Buffer-menu-unmark)
 
 
 
@@ -203,10 +204,10 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture) ; how do I change the capture locations?
 
-(evil-define-key 'motion 'Info-mode-map "gn" 'Info-next)
-(evil-define-key 'motion 'Info-mode-map "gp" 'Info-prev)
-(evil-define-key 'motion 'Info-mode-map
-  "gf" 'Info-follow-nearest-node)
+;; (evil-define-key 'motion 'Info-mode-map "gn" 'Info-next)
+;; (evil-define-key 'motion 'Info-mode-map "gp" 'Info-prev)
+;; (evil-define-key 'motion 'Info-mode-map
+;;   "gf" 'Info-follow-nearest-node)
 
 ;; would be nice if z-c would detect being at a drawer
 
@@ -224,8 +225,8 @@
   (which-key-mode)
   (which-key-setup-side-window-bottom)
     (keymap-set global-map "C-x w" 'toggle-wk-toplevel)
-    (evil-define-key '(normal motion) 'global
-      (kbd "<leader>w") 'toggle-wk-toplevel))
+    ;; (evil-define-key '(normal motion) 'global (kbd "<leader>w") 'toggle-wk-toplevel)
+    )
 
 (use-package marginalia
   :config
@@ -240,9 +241,12 @@
 (use-package consult
   :bind
   ("C-x b" . consult-buffer)
-  ("C-x C-f" . consult-find)
+  ("C-c f f" . consult-fd)
+  ("C-c f l" . consult-find)
+  ("C-c f b" . consult-buffer)
   :config
-  (evil-define-key '(normal motion) 'global "gl" 'consult-goto-line))
+  ;;(evil-define-key '(normal motion) 'global "gl" 'consult-goto-line)
+  )
 
 (use-package magit
   :bind
@@ -280,53 +284,53 @@
   (org-roam-db-autosync-mode))
   
 
-(nremap "gt" 'tab-bar-switch-to-next-tab)
-(nremap "gT" 'tab-bar-switch-to-prev-tab)
-(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
-(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
-(evil-define-key '(normal motion) 'global (kbd "<leader>fl") 'consult-goto-line)
-(evil-define-key '(normal motion) 'global (kbd "<leader>ff") 'consult-find)
-(evil-define-key '(normal motion) 'global (kbd "<leader>fb") 'consult-buffer)
-(evil-define-key '(normal motion) 'global (kbd "<leader>fpb") 'project-list-buffers)
-(evil-define-key '(normal motion) 'global (kbd "<leader>fpf") 'consult-project-buffer)
-(evil-define-key '(normal motion) 'global (kbd "<leader>fpp") 'project-switch-project)
-
-(evil-define-key '(normal motion visual) 'global
-  (kbd "M-.")
-  (lambda () (interactive)
-    (repeat-complex-command 0) (minibuffer-complete-and-exit)))
-
-
-(evil-define-key '(normal motion) 'emacs-lisp-mode
-  (kbd "<leader>ef") 'load-file)
-;(evil-define-key '(normal motion) 'emacs-lisp-mode (kbd "<leader>eb") 'eval-buffer)
-(evil-define-key '(normal motion) 'lisp-data-mode
-  (kbd "<leader>ef") 'load-file)
-;(evil-define-key '(normal motion) 'lisp-data-mode (kbd "<leader>eb") 'eval-buffer)
-(setf minibuffer-visible-completions nil) ; this fixes the annoying minibuffer error popup?
+;;(nremap "gt" 'tab-bar-switch-to-next-tab)
+;;(nremap "gT" 'tab-bar-switch-to-prev-tab)
+;;(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
+;;(evil-define-key '(normal motion) 'global "gt" 'tab-bar-switch-to-next-tab)
+;;(evil-define-key '(normal motion) 'global (kbd "<leader>fl") 'consult-goto-line)
+;;(evil-define-key '(normal motion) 'global (kbd "<leader>ff") 'consult-find)
+;;(evil-define-key '(normal motion) 'global (kbd "<leader>fb") 'consult-buffer)
+;;(evil-define-key '(normal motion) 'global (kbd "<leader>fpb") 'project-list-buffers)
+;;(evil-define-key '(normal motion) 'global (kbd "<leader>fpf") 'consult-project-buffer)
+;;(evil-define-key '(normal motion) 'global (kbd "<leader>fpp") 'project-switch-project)
+;;
+;;(evil-define-key '(normal motion visual) 'global
+;;  (kbd "M-.")
+;;  (lambda () (interactive)
+;;    (repeat-complex-command 0) (minibuffer-complete-and-exit)))
 
 
-(evil-define-key 'normal 'global
-  (kbd "C-h C-c") (lambda () (interactive) (message "never again")))
-(evil-define-key '(normal motion) 'global
-  (kbd "<leader> d SPC")
-  (lambda () (interactive) (message "haha ha!")))
-(evil-define-key '(normal motion) 'emacs-lisp-mode
-  (kbd "<leader> e SPC") 'eval-defun)
-(evil-define-key '(normal) 'common-lisp-mode
-  (kbd "<leader> e SPC") 'sly-eval-defun)
-;; to leader key or not to leader key?
-;; basically whatever I do will end up feeling natural, so just go for it
-;; My basic idiom is <leader><key><leader> does "the obvious thing"
-;; my modal zap. Repetitions should zap things in obvious ways.
+ ;;(evil-define-key '(normal motion) 'emacs-lisp-mode
+ ;;  (kbd "<leader>ef") 'load-file)
+ ;;;(evil-define-key '(normal motion) 'emacs-lisp-mode (kbd "<leader>eb") 'eval-buffer)
+ ;;(evil-define-key '(normal motion) 'lisp-data-mode
+ ;;  (kbd "<leader>ef") 'load-file)
+ ;;;(evil-define-key '(normal motion) 'lisp-data-mode (kbd "<leader>eb") 'eval-buffer)
+ ;;(setf minibuffer-visible-completions nil) ; this fixes the annoying minibuffer error popup?
+
+
+;; (evil-define-key 'normal 'global
+;;   (kbd "C-h C-c") (lambda () (interactive) (message "never again")))
+;; (evil-define-key '(normal motion) 'global
+;;   (kbd "<leader> d SPC")
+;;   (lambda () (interactive) (message "haha ha!")))
+;; (evil-define-key '(normal motion) 'emacs-lisp-mode
+;;   (kbd "<leader> e SPC") 'eval-defun)
+;; (evil-define-key '(normal) 'common-lisp-mode
+;;   (kbd "<leader> e SPC") 'sly-eval-defun)
+;; ;; to leader key or not to leader key?
+;; ;; basically whatever I do will end up feeling natural, so just go for it
+;; ;; My basic idiom is <leader><key><leader> does "the obvious thing"
+;; ;; my modal zap. Repetitions should zap things in obvious ways.
 
 ;; minibuffer stuff
 (keymap-set minibuffer-local-must-match-map "C-j" 'minibuffer-next-completion)
 (keymap-set minibuffer-local-map "C-l" 'minibuffer-complete-and-exit)
 (keymap-set minibuffer-local-map "C-k" 'minibuffer-previous-completion)
-(keymap-set minibuffer-local-map "C-w" 'evil-delete-backward-word)
-(evil-define-key '(normal motion) 'global "," 'evil-jump-backward)
-(evil-define-key '(normal motion) 'global "." 'evil-jump-forward)
+;;(keymap-set minibuffer-local-map "C-w" 'evil-delete-backward-word)
+;; (evil-define-key '(normal motion) 'global "," 'evil-jump-backward)
+;; (evil-define-key '(normal motion) 'global "." 'evil-jump-forward)
 
 (use-package sly
   :config
@@ -386,6 +390,30 @@
 
 ;; (load-theme "wheatgrass")
 (setq initial-buffer-choice 'scratch-buffer)
+(add-hook 'after-init-hook (lambda () (load-theme 'wheatgrass)))
+
+;; skinny-only
+(defun on-workhorse-p ()
+  (string-equal "skinny" (shell-command-to-string "echo -n $HOST")))
+
+(use-package mise
+  :config
+  (add-hook 'after-init-hook #'global-mise-mode))
+
+; (use-package kubed
+;   :if (on-workhorse-p)
+;   :config
+;   (keymap-global-set "C-c k" 'kubed-prefix-map)
+;   (setq kubed-kubectl-program
+; 	(string-trim (shell-command-to-string "mise which kubectl"))))
+
+; (defun mise-cmd (name)
+;   (string-trim (shell-command-to-string (format "dirname $(mise which %s)" name))))
 
 
+; (mise-cmd "kubelogin")
+; (mise-cmd "az")
+; (add-to-list 'exec-path (mise-cmd "kubelogin"))
+; (add-to-list 'exec-path (mise-cmd "az"))
 
+(setq-default indent-tabs-mode nil)
