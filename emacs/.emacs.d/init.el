@@ -279,3 +279,5 @@
 ; (add-to-list 'exec-path (mise-cmd "az"))
 
 (setq-default indent-tabs-mode nil)
+(global-set-key (kbd "M-,") #'previous-buffer)
+(global-set-key (kbd "M-.") #'next-buffer)
