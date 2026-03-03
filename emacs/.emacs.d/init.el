@@ -142,8 +142,6 @@
           :default t
           :items ,#'vterm-buffers))
 
-(add-to-list 'consult-buffer-sources 'consult-source-vterm)
-
 (use-package consult
   :bind
   ("C-x b" . consult-buffer)
