@@ -37,9 +37,10 @@
    '("7478bc74ae421ad2103d4239176f71e6d55ef0be4eb874c328b862af5b93a857"
      "8363207a952efb78e917230f5a4d3326b2916c63237c1f61d7e5fe07def8d378"
      "e0b5fb579ff4c574f82b554cddd35810c2a579b4035769da41d1a9a807e12516"
-     "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24"
-     default))
+     "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24" default))
+ '(fill-column 100)
  '(markdown-command "pandoc")
+ '(org-agenda-files nil)
  '(package-vc-selected-packages 'nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -86,7 +87,30 @@
 ;; +ATTR_ORG :width <number>
 (setq org-image-actual-width '(768))
 
-(use-package vterm)
+(use-package vterm
+  :bind (:map project-prefix-map
+              ("t" . project-vterm))
+  :preface
+  (defun project-vterm ()
+    (interactive)
+    (defvar vterm-buffer-name)
+    (let* ((default-directory (project-root (project-current t)))
+           (vterm-buffer-name (project-prefixed-buffer-name "vterm"))
+           (vterm-buffer (get-buffer vterm-buffer-name)))
+      (if (and vterm-buffer (not current-prefix-arg))
+          (pop-to-buffer vterm-buffer (bound-and-true-p display-comint-buffer-action))
+        (vterm))))
+  :init
+  (add-to-list 'project-switch-commands '(project-vterm "Vterm") t)
+  (add-to-list 'project-kill-buffer-conditions '(major-mode . vterm-mode))
+  :config
+  (setq vterm-copy-exclude-prompt t)
+  (setq vterm-max-scrollback 100000)
+  (setq vterm-tramp-shells '(("ssh" "/bin/bash"))))
+
+(use-package fuel
+  :config
+  (setq fuel-factor-root-dir "~/projects/others/factor"))
 
 (use-package xclip
   :config

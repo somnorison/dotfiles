@@ -12,16 +12,9 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 zstyle :compinstall filename "$HOME/.zshrc"
 
 export PATH="$PATH:$HOME/scripts"
-export PATH="$PATH:$HOME/util"
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/racket/bin"
-export PATH="$PATH:$HOME/.racket/7.4/bin"
-export PATH="$PATH:$HOME/.yarn/bin"
-export PATH="$PATH:$HOME/.npm/bin"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$HOME/go/bin"
-export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
-
 # export LUA_PATH="$HOME/.local/lib/lua/?.lua;;"
 
 
@@ -29,7 +22,7 @@ export SCREENDIR="$HOME/.screen"
 export EDITOR="emacsclient -nw"
 export BROWSER="cha" # use chawan browser. Needed for arch-wiki-cli
 
-export BKT_TTL=1m
+export BKT_TTL=15m
 #export VIMRUNTIME=/usr/share/vim/vim81
 
 pgrep -u "$USER" ssh-agent > /dev/null || ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"

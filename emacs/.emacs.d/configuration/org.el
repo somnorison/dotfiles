@@ -1,6 +1,7 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((lisp . t)
+ '((calc . t)
+   (lisp . t)
    (jq . t)
    (shell . t)
    (lua .t)))
