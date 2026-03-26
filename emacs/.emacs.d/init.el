@@ -90,6 +90,7 @@
 (use-package vterm
   :bind (:map project-prefix-map
               ("t" . project-vterm))
+  :after '(project)
   :preface
   (defun project-vterm ()
     (interactive)
@@ -305,3 +306,4 @@
 (setq-default indent-tabs-mode nil)
 (global-set-key (kbd "M-,") #'previous-buffer)
 (global-set-key (kbd "M-.") #'next-buffer)
+(use-package forth-mode)

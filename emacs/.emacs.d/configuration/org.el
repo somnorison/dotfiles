@@ -4,7 +4,8 @@
    (lisp . t)
    (jq . t)
    (shell . t)
-   (lua .t)))
+   (lua . t)
+   (forth . t)))
 
 (setq org-babel-lisp-eval-fn #'sly-eval)
 ; https://orgmode.org/manual/Results-of-Evaluation.html
