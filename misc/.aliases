@@ -16,6 +16,8 @@ alias gitr='gits ; git rebase -i master'
 alias bkt1h='bkt --ttl=60m'
 alias bkt1m='bkt --ttl=1m'
 alias modal_repl='modal ~/bin/repl.modal'
+alias ufcli='uxncli ~/roms/uf.rom'
+alias ufgui='uxn2 ~/roms/uf.rom'
 
 function exists-f() {
   if [ ! -f "$1" ]; then

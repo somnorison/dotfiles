@@ -5,6 +5,7 @@
    (jq . t)
    (shell . t)
    (lua . t)
+   (verb . t)
    (forth . t)))
 
 (setq org-babel-lisp-eval-fn #'sly-eval)

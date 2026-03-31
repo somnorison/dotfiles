@@ -283,9 +283,9 @@
 (defun on-workhorse-p ()
   (string-equal "skinny" (shell-command-to-string "echo -n $HOST")))
 
-(use-package mise
-  :config
-  (add-hook 'after-init-hook #'global-mise-mode))
+; (use-package mise
+;  :config
+;  (add-hook 'after-init-hook #'global-mise-mode))
 
 ; (use-package kubed
 ;   :if (on-workhorse-p)
@@ -307,3 +307,9 @@
 (global-set-key (kbd "M-,") #'previous-buffer)
 (global-set-key (kbd "M-.") #'next-buffer)
 (use-package forth-mode)
+
+(use-package verb
+  :straight t
+  :after org
+  :config
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
