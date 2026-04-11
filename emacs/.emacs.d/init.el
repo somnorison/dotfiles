@@ -43,8 +43,10 @@
  '(org-agenda-files nil)
  '(package-vc-selected-packages 'nil)
  '(safe-local-variable-values
-   '((org-todo-keywords (sequence "TODO(t)" "READY(r)" "DONE(d)"))
-     (org-refile-targets (nil :level . 1) (nil :tag . "tg")))))
+   '((org-todo-keywords (sequence "TODO" "READY" "DONE"))
+     (org-todo-keywords (sequence "TODO" "READY" "|" "DONE"))
+     (org-refile-targets (nil :level . 1) (nil :tag . "tg"))
+     (org-refile-targets quote ((:level . 1) (:tag . "tg"))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
