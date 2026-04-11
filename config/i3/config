@@ -40,6 +40,7 @@ exec --no-startup-id sh ~/.fehbg
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+# bindsym F12 exec "kitty -1"
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -67,6 +68,7 @@ floating_modifier $mod
 # start a terminal
 # bindsym $mod+Return exec "$TERMINAL -e /bin/sh -c 'tmux list-session && tmux a || tmux'"
 bindsym $mod+Return exec "kitty -1"
+
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -138,7 +140,7 @@ bindsym $mod+a focus parent
 bindsym $mod+z focus child
 
 # move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+F12 move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.

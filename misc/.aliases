@@ -18,6 +18,8 @@ alias bkt1m='bkt --ttl=1m'
 alias modal_repl='modal ~/bin/repl.modal'
 alias ufcli='uxncli ~/roms/uf.rom'
 alias ufgui='uxn2 ~/roms/uf.rom'
+alias ufx='uxn2 ~/roms/ufx.rom'
+alias drifblim='uxn2 ~/roms/drifblim.rom'
 
 function exists-f() {
   if [ ! -f "$1" ]; then
