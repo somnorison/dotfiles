@@ -41,7 +41,10 @@
  '(fill-column 100)
  '(markdown-command "pandoc")
  '(org-agenda-files nil)
- '(package-vc-selected-packages 'nil))
+ '(package-vc-selected-packages 'nil)
+ '(safe-local-variable-values
+   '((org-todo-keywords (sequence "TODO(t)" "READY(r)" "DONE(d)"))
+     (org-refile-targets (nil :level . 1) (nil :tag . "tg")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -89,8 +92,11 @@
 
 (use-package vterm
   :bind (:map project-prefix-map
-              ("t" . project-vterm))
-  :after '(project)
+              ("t" . project-vterm)
+              :map vterm-mode-map
+              ("M-," . previous-buffer)
+              ("M-." . next-buffer))
+  :after (project)
   :preface
   (defun project-vterm ()
     (interactive)
@@ -109,10 +115,6 @@
   (setq vterm-max-scrollback 100000)
   (setq vterm-tramp-shells '(("ssh" "/bin/bash"))))
 
-(use-package fuel
-  :config
-  (setq fuel-factor-root-dir "~/projects/others/factor"))
-
 (use-package xclip
   :config
   (xclip-mode 1))
@@ -122,7 +124,7 @@
 (use-package exotica-theme
   :config
 					;(load-theme 'exotica t)
-  )
+ )
 
 
 (global-set-key (kbd "C-c l") #'org-store-link)
@@ -312,4 +314,31 @@
   :straight t
   :after org
   :config
+  (add-to-list 'org-babel-load-languages '(verb . t))
+  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+
+(use-package uxntal-mode
+  :config
+  (setq uxntal-uxnemu-path "uxn2")
+  :bind (("C-c C-c" . uxntal-compile-and-run)
+         ("C-c C-d" . uxntal-explain-word)) 
+  :hook (uxntal-mode . (lambda () (electric-indent-local-mode -1))))
+
+(global-set-key (kbd "M-p") #'backward-paragraph)
+(global-set-key (kbd "M-n") #'forward-paragraph)
+
+(defun rosin-vterm-run (name command)
+    (let ((buf (vterm (generate-new-buffer-name name))))
+      (with-current-buffer buf
+        (vterm-send-string command)
+        (vterm-send-return))
+      buf))
+;    (rosin-vterm-run "pla-gqzj" "docker compose exec -it agent bash
+;    cd planning
+;    copilot --yolo -i \"$(cat working/pla-gqzj/worker-prompt.md)\"")
+;    ; copilot --yolo -i "$(cat working/pla-gqzj/worker-prompt.md)"
+
+; (rosin-vterm-run "*test-vterm*" "echo hello, world")
+(setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+(delete-selection-mode)

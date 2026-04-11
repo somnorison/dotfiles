@@ -5,9 +5,8 @@
    (jq . t)
    (shell . t)
    (lua . t)
-   (verb . t)
    (forth . t)))
 
 (setq org-babel-lisp-eval-fn #'sly-eval)
 ; https://orgmode.org/manual/Results-of-Evaluation.html
-(setq org-babel-default-header-args '((:results . "output drawer")))
+(setq org-babel-default-header-args '((:results . "output drawer replace")))
