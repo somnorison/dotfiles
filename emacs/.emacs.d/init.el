@@ -103,12 +103,15 @@
   (defun project-vterm ()
     (interactive)
     (defvar vterm-buffer-name)
-    (let* ((default-directory (project-root (project-current t)))
+    (let* ((project (project-current t))
+           (default-directory (project-root project))
            (vterm-buffer-name (project-prefixed-buffer-name "vterm"))
            (vterm-buffer (get-buffer vterm-buffer-name)))
       (if (and vterm-buffer (not current-prefix-arg))
           (pop-to-buffer vterm-buffer (bound-and-true-p display-comint-buffer-action))
-        (vterm))))
+        (if current-prefix-arg
+            (vterm (generate-new-buffer-name vterm-buffer-name))
+          (vterm)))))
   :init
   (add-to-list 'project-switch-commands '(project-vterm "Vterm") t)
   (add-to-list 'project-kill-buffer-conditions '(major-mode . vterm-mode))
@@ -158,18 +161,19 @@
    ("C-;" . embark-dwim)
    ("C-h B" . embark-bindings)))
 
-(defun vterm-buffers ()
-  (cl-remove-if-not (lambda (bufname)
-                      (eq (with-current-buffer bufname major-mode) 'vterm-mode))
-                    (cl-map 'list #'buffer-name (buffer-list))))
-
 (defvar consult-source-vterm
   `(:name "VTerm"
           :narrow ?v
           :category buffer
           :face consult-buffer
-          :default t
-          :items ,#'vterm-buffers))
+          :history buffer-name-history
+          :state ,#'consult--buffer-state
+          :action ,#'consult--buffer-action
+          :items ,(lambda ()
+                    (consult--buffer-query
+                     :sort 'visibility
+                     :mode 'vterm-mode
+                     :as #'consult--buffer-pair))))
 
 (use-package consult
   :bind
