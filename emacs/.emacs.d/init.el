@@ -40,7 +40,7 @@
      "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24" default))
  '(fill-column 100)
  '(markdown-command "pandoc")
- '(org-agenda-files nil)
+ '(org-agenda-files '("~/zetta/journal/get-it-done.org"))
  '(package-vc-selected-packages 'nil)
  '(safe-local-variable-values
    '((org-todo-keywords (sequence "TODO" "READY" "DONE"))
@@ -55,7 +55,7 @@
  )
 
 
-
+        
 
 ;; emacs nicer init
 
@@ -96,8 +96,8 @@
   :bind (:map project-prefix-map
               ("t" . project-vterm)
               :map vterm-mode-map
-              ("M-," . previous-buffer)
-              ("M-." . next-buffer))
+              ("M-," . marx-jump-backward)
+              ("M-." . marx-jump-forward))
   :after (project)
   :preface
   (defun project-vterm ()
@@ -175,13 +175,18 @@
                      :mode 'vterm-mode
                      :as #'consult--buffer-pair))))
 
+
+
+
 (use-package consult
   :bind
   ("C-x b" . consult-buffer)
   ("C-y" . consult-yank-from-kill-ring)
-  ("C-c f f" . consult-fd)
-  ("C-c f l" . consult-find)
-  ("C-c f b" . consult-buffer)
+  ("M-RET f" . consult-fd)
+  ("M-RET l" . consult-find)
+  ("M-RET b" . consult-buffer)
+  ("M-RET RET" . rg)
+  ("M-RET p" . project-switch-project)
   :config
   (unless (member 'consult-source-vterm consult-source-vterm)
     (add-to-list 'consult-buffer-sources 'consult-source-vterm)))
@@ -203,6 +208,44 @@
 ;; Leader key thing
 
 (use-package rg)
+ 
+(use-package lsp-mode
+  :straight t
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "M-RET l")
+  :preface
+  (defun rosin-lsp-deferred-if-program (program)
+    (when (and buffer-file-name (executable-find program))
+      (lsp-deferred)))
+  (defun rosin-lsp-rust ()
+    (rosin-lsp-deferred-if-program "rust-analyzer"))
+  (defun rosin-lsp-c ()
+    (rosin-lsp-deferred-if-program "clangd"))
+  (defun rosin-lsp-zig ()
+    (rosin-lsp-deferred-if-program "zls"))
+  :hook
+  ((lsp-mode . lsp-enable-which-key-integration)
+   (go-mode . rosin-lsp-go)
+   (rust-mode . rosin-lsp-rust)
+   (c-mode . rosin-lsp-c)
+   (c-ts-mode . rosin-lsp-c)
+   (zig-mode . rosin-lsp-zig)
+   (zig-ts-mode . rosin-lsp-zig))
+  :custom
+  (lsp-completion-provider :capf)
+  (lsp-diagnostics-provider :flymake)
+  (lsp-enable-snippet nil)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil)
+  (lsp-signature-auto-activate nil))
+
+(load-file "~/.emacs.d/configuration/marx.el")
+(global-set-key (kbd "M-,") #'marx-jump-backward)
+(global-set-key (kbd "M-.") #'marx-jump-forward)
+(global-set-key (kbd "<f9>") #'previous-buffer)
+(global-set-key (kbd "<f10>") #'next-buffer)
 
 (use-package org-roam
   :custom
@@ -215,9 +258,9 @@
   ("C-c n c" . org-roam-capture)
   ("C-c n j" . org-roam-dailies-capture-today)
   ("C-c n t" . org-roam-dailies-goto-today)
+  ("C-c C-f n" . org-roam-node-find)
   :config
   (org-roam-db-autosync-mode))
-
 
 ;; minibuffer stuff
 (keymap-set minibuffer-local-must-match-map "C-j" 'minibuffer-next-completion)
@@ -312,8 +355,6 @@
 ; (add-to-list 'exec-path (mise-cmd "az"))
 
 (setq-default indent-tabs-mode nil)
-(global-set-key (kbd "M-,") #'previous-buffer)
-(global-set-key (kbd "M-.") #'next-buffer)
 (use-package forth-mode)
 
 (use-package verb
@@ -348,3 +389,8 @@
 ; (rosin-vterm-run "*test-vterm*" "echo hello, world")
 (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 (delete-selection-mode)
+(winner-mode 1)
+(use-package vundo
+  :straight t
+  :config (setq vundo-glyph-alist vundo-unicode-symbols)
+  :bind (("C-x u" . vundo)))
