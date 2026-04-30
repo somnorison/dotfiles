@@ -3,6 +3,8 @@
  '((calc . t)
    (lisp . t)
    (shell . t)
+;   (jq . t)
+;   (verb . t)
    (lua . t)
    (forth . t)))
 
