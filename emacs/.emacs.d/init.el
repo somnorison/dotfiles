@@ -92,6 +92,8 @@
 ;; +ATTR_ORG :width <number>
 (setq org-image-actual-width '(768))
 
+
+
 (use-package vterm
   :bind (:map project-prefix-map
               ("t" . project-vterm)
@@ -181,11 +183,10 @@
 (use-package consult
   :bind
   ("C-x b" . consult-buffer)
-  ("C-y" . consult-yank-from-kill-ring)
-  ("M-RET f" . consult-fd)
+  ("C-M-y" . consult-yank-from-kill-ring)
+  ("C-c f" . consult-fd)
   ("M-RET l" . consult-find)
-  ("M-RET b" . consult-buffer)
-  ("M-RET RET" . rg)
+  ("C-c g" . rg)
   ("M-RET p" . project-switch-project)
   :config
   (unless (member 'consult-source-vterm consult-source-vterm)
@@ -208,64 +209,50 @@
 ;; Leader key thing
 
 (use-package rg)
- 
-(use-package lsp-mode
+
+(use-package zig-mode
   :straight t
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "M-RET l")
+  :mode "\\.zig\\'")
+
+(use-package odin-mode
+  :straight (:host github :repo "mattt-b/odin-mode")
+  :mode "\\.odin\\'")
+
+(use-package eglot
+  :straight nil
+  :commands (eglot eglot-ensure)
   :preface
-  (defun rosin-lsp-deferred-if-program (program)
+  (defun rosin-eglot-if-program (program)
     (when (and buffer-file-name (executable-find program))
-      (lsp-deferred)))
-  (defun rosin-lsp-rust ()
-    (rosin-lsp-deferred-if-program "rust-analyzer"))
-  (defun rosin-lsp-c ()
-    (rosin-lsp-deferred-if-program "clangd"))
-  (defun rosin-lsp-zig ()
-    (rosin-lsp-deferred-if-program "zls"))
+      (eglot-ensure)))
+  (defun rosin-eglot-zig () (rosin-eglot-if-program "zls"))
+  (defun rosin-eglot-odin () (rosin-eglot-if-program "ols"))
   :hook
-  ((lsp-mode . lsp-enable-which-key-integration)
-   (go-mode . rosin-lsp-go)
-   (rust-mode . rosin-lsp-rust)
-   (c-mode . rosin-lsp-c)
-   (c-ts-mode . rosin-lsp-c)
-   (zig-mode . rosin-lsp-zig)
-   (zig-ts-mode . rosin-lsp-zig))
-  :custom
-  (lsp-completion-provider :capf)
-  (lsp-diagnostics-provider :flymake)
-  (lsp-enable-snippet nil)
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-modeline-code-actions-enable nil)
-  (lsp-modeline-diagnostics-enable nil)
-  (lsp-signature-auto-activate nil))
+  ((zig-mode . rosin-eglot-zig))
+  ((odin-mode . rosin-eglot-odin))
+  :config
+  (add-to-list 'eglot-server-programs
+               '(zig-mode . ("zls"))
+               '(odin-mode . ("ols"))))
 
 (load-file "~/.emacs.d/configuration/marx.el")
+(load-file "~/.emacs.d/configuration/tko.el")
 (global-set-key (kbd "M-,") #'marx-jump-backward)
 (global-set-key (kbd "M-.") #'marx-jump-forward)
 (global-set-key (kbd "<f9>") #'previous-buffer)
 (global-set-key (kbd "<f10>") #'next-buffer)
-
-(use-package org-roam
-  :custom
-  (org-roam-directory (file-truename "~/zetta"))
-  :bind
-  ("C-c n l" . org-roam-buffer-toggle)
-  ("C-c n f" . org-roam-node-find)
-  ("C-c n g" . org-roam-graph)
-  ("C-c n i" . org-roam-node-insert)
-  ("C-c n c" . org-roam-capture)
-  ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n t" . org-roam-dailies-goto-today)
-  ("C-c C-f n" . org-roam-node-find)
-  :config
-  (org-roam-db-autosync-mode))
+(global-set-key (kbd "C-c t") #'rosin-tko-tickets)
+(global-set-key (kbd "C-c n j") #'(lambda () (interactive) (find-file "~/diurn/journal.org")))
+(global-set-key (kbd "C-c n g") #'(lambda () (interactive) (find-file "~/diurn/get-it-done.org")))
+(global-unset-key (kbd "M-;"))
+(global-set-key (kbd "C-c d") #'xref-find-definitions)
+(global-set-key (kbd "C-c r") #'xref-find-references)
+(global-set-key (kbd "C-c a") #'xref-find-apropos)
 
 ;; minibuffer stuff
-(keymap-set minibuffer-local-must-match-map "C-j" 'minibuffer-next-completion)
-(keymap-set minibuffer-local-map "C-l" 'minibuffer-complete-and-exit)
-(keymap-set minibuffer-local-map "C-k" 'minibuffer-previous-completion)
+(global-set-key (kbd "M-j") #'minibuffer-next-completion)
+(global-set-key (kbd "M-k") #'minibuffer-previous-completion)
+(global-set-key (kbd "M-l") #'minibuffer-choose-completion)
 ;;(keymap-set minibuffer-local-map "C-w" 'evil-delete-backward-word)
 ;; (evil-define-key '(normal motion) 'global "," 'evil-jump-backward)
 ;; (evil-define-key '(normal motion) 'global "." 'evil-jump-forward)
@@ -279,7 +266,6 @@
 ;   (setq inferior-lisp-program "sbcl"))
 ;; Replace "sbcl" with the path to your implementation
 
-(use-package embark-consult )
 
 (load-file "~/.emacs.d/configuration/org.el")
 
@@ -309,6 +295,8 @@
 	("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
 	(".*" "xdg-open")))
 
+(unless (char-table-p standard-display-table)
+  (setq standard-display-table (make-display-table)))
 (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 (setq mode-line-end-spaces nil)
 
@@ -355,7 +343,8 @@
 ; (add-to-list 'exec-path (mise-cmd "az"))
 
 (setq-default indent-tabs-mode nil)
-(use-package forth-mode)
+(use-package forth-mode
+  :straight t)
 
 (use-package verb
   :straight t
@@ -366,6 +355,7 @@
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 
 (use-package uxntal-mode
+  :straight t
   :config
   (setq uxntal-uxnemu-path "uxn2")
   :bind (("C-c C-c" . uxntal-compile-and-run)
