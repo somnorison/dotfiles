@@ -42,6 +42,7 @@
     (define-key map (kbd "r") #'rosin-tko-rotate-status)
     (define-key map (kbd "n") #'rosin-tko-add-note)
     (define-key map (kbd "c") #'rosin-tko-create-ticket)
+    (define-key map (kbd "i") #'rosin-tko-insert-ticket-id)
     map))
 
 (define-derived-mode rosin-tko-tickets-mode special-mode "TKO"
@@ -121,6 +122,32 @@
            (member (rosin-tko-ticket-status ticket) rosin-tko-active-statuses))
          tickets)
       tickets)))
+
+(defun rosin-tko--ticket-candidates (&optional root active-only)
+  (let* ((root (or root (rosin-tko--project-root)))
+         (tickets (rosin-tko--tickets root active-only)))
+    (mapcar
+     (lambda (ticket)
+       (let* ((id (rosin-tko-ticket-id ticket))
+              (title (rosin-tko-ticket-title ticket))
+              (parent (rosin-tko-ticket-parent ticket))
+              (display (if parent
+                           (format "%s :: [%s] %s" id parent title)
+                         (format "%s :: %s" id title))))
+         (cons display id)))
+     tickets)))
+
+(defun rosin-tko--read-ticket-id (&optional prompt root include-closed)
+  (let* ((candidates (rosin-tko--ticket-candidates root (not include-closed)))
+         (choice (completing-read
+                  (or prompt "Ticket: ")
+                  candidates
+                  nil t)))
+    (cdr (assoc choice candidates))))
+
+(defun rosin-tko-insert-ticket-id (&optional include-closed)
+  (interactive "P")
+  (insert (rosin-tko--read-ticket-id "Insert ticket: " nil include-closed)))
 
 (defun rosin-tko--line (ticket)
   (let ((face (rosin-tko--status-face (rosin-tko-ticket-status ticket))))
@@ -468,3 +495,34 @@ With prefix argument ALL, include closed tickets."
                         #'rosin-tko-xref-backend nil t))))
 
 (provide 'tko)
+
+;;  Create/status/note are local operations. Links/deps/parent/tags are graph operations:
+;;
+;;  - need ticket identity at point or current file
+;;  - need target ticket selection with completion
+;;  - need list parsing/writing without corrupting property drawers
+;;  - need symmetric update for links, but not deps/parent
+;;  - need viewer-line context and ticket-file context to share behavior
+;;  - need refresh/invalidation after mutation
+;;  - need rules for duplicates, removal, and missing targets
+;;
+;;  Operative claim: next useful abstraction is not “add deps command”; it is a small property/list mutation layer plus target-ticket
+;;  completion. After that, deps/links/tags/parent are cheap.
+;;
+;;  Likely shape:
+;;
+;;  - rosin-tko--current-ticket-file: viewer row or current ticket buffer.
+;;  - rosin-tko--ticket-id-for-file: read TK_ID, fallback filename.
+;;  - rosin-tko--all-ticket-candidates: (display . id) from .tickets/*.org, maybe id :: title.
+;;  - rosin-tko--read-ticket-id: completing-read.
+;;  - rosin-tko--parse-list-field / rosin-tko--format-list-field: [a, b].
+;;  - rosin-tko--update-ticket-file: safely edit file or current buffer.
+;;  - Commands:
+;;      - add/remove dep: mutate current TK_DEPS.
+;;      - set/clear parent: mutate TK_PARENT.
+;;      - add/remove tag: mutate TK_TAGS.
+;;      - add/remove link: mutate both current and target TK_LINKS.
+;;
+;;  One important policy call: links symmetric, deps directional, parent singular, tags free text. That should be encoded early, before
+;;  adding commands.
+;;
