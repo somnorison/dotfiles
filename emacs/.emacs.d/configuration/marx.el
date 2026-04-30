@@ -68,6 +68,15 @@
 (advice-add 'other-window :before #'marx-record-jump-maybe)
 (advice-add 'previous-buffer :before #'marx-record-jump-maybe)
 (advice-add 'next-buffer :before #'marx-record-jump-maybe)
+(advice-add 'org-open-at-point :before #'marx-record-jump-maybe)
+(advice-add 'dired-find-file :before #'marx-record-jump-maybe)
+
+;; We could also consider the case of pushing a mark only when we've completed
+;; a minibuffer command that takes us to another place, e.g. find-file
+;; This is what's going to require the "marx-currently-recording-jump" functionality.
+;; and some way of identifying the current invocation.
+
+                                        ;; (advice-add 'find-file :before #'marx-record-jump-maybe)
 ;;  this-command
 ;;  real-this-command
 ;;  last-command

@@ -37,7 +37,8 @@
 
 By default, this function relies on (org-roam-dailies-goto-today).
 If it cannot locate the heading named \"* time\" in that file, it creates one and inserts a table."
-  (org-roam-dailies-goto-today)
+  (find-file "~/diurn/journal.org")
+  ;;(org-roam-dailies-goto-today)
   (if (org-find-exact-headline-in-buffer "time")
     (ticktock--timetable-current-file)
     (ticktock--insert-time-section))
