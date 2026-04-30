@@ -40,10 +40,11 @@
      "a5b8812270156398a2d93358c0ffd9525fc4fcc4ecb9844aa040e54613146a24" default))
  '(fill-column 100)
  '(markdown-command "pandoc")
- '(org-agenda-files '("~/zetta/journal/get-it-done.org"))
+ '(org-agenda-files '("~/diurn/get-it-done.org"))
  '(package-vc-selected-packages 'nil)
  '(safe-local-variable-values
-   '((org-todo-keywords (sequence "TODO" "READY" "DONE"))
+   '((org-todo-keywords (sequence "TODO(t)" "READY(r)" "|" "DONE(d)"))
+     (org-todo-keywords (sequence "TODO" "READY" "DONE"))
      (org-todo-keywords (sequence "TODO" "READY" "|" "DONE"))
      (org-refile-targets (nil :level . 1) (nil :tag . "tg"))
      (org-refile-targets quote ((:level . 1) (:tag . "tg"))))))
@@ -235,13 +236,14 @@
                '(zig-mode . ("zls"))
                '(odin-mode . ("ols"))))
 
-(load-file "~/.emacs.d/configuration/marx.el")
+
 (load-file "~/.emacs.d/configuration/tko.el")
+(load-file "~/.emacs.d/configuration/marx.el")
 (global-set-key (kbd "M-,") #'marx-jump-backward)
 (global-set-key (kbd "M-.") #'marx-jump-forward)
 (global-set-key (kbd "<f9>") #'previous-buffer)
 (global-set-key (kbd "<f10>") #'next-buffer)
-(global-set-key (kbd "C-c t") #'rosin-tko-tickets)
+(global-set-key (kbd "C-c k") #'rosin-tko-tickets)
 (global-set-key (kbd "C-c n j") #'(lambda () (interactive) (find-file "~/diurn/journal.org")))
 (global-set-key (kbd "C-c n g") #'(lambda () (interactive) (find-file "~/diurn/get-it-done.org")))
 (global-unset-key (kbd "M-;"))
@@ -384,3 +386,7 @@
   :straight t
   :config (setq vundo-glyph-alist vundo-unicode-symbols)
   :bind (("C-x u" . vundo)))
+
+(setq desktop-dirname "~/.emacs.d/")
+(setq desktop-path '("~/.emacs.d/"))
+(desktop-save-mode 1)
