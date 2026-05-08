@@ -100,7 +100,10 @@
               ("t" . project-vterm)
               :map vterm-mode-map
               ("M-," . marx-jump-backward)
-              ("M-." . marx-jump-forward))
+              ("M-." . marx-jump-forward)
+              ("<f10>" . next-buffer)
+              ("<f9>" . previous-buffer)
+              )
   :after (project)
   :preface
   (defun project-vterm ()

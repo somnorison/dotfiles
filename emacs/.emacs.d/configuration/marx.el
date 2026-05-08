@@ -71,7 +71,7 @@
 (advice-add 'org-open-at-point :before #'marx-record-jump-maybe)
 (advice-add 'dired-find-file :before #'marx-record-jump-maybe)
 (advice-add 'rosin-tko-visit-ticket :before #'marx-record-jump-maybe)
-(advice-add 'rosin-tko-add-note :before #'marx-record-jump-maybe)
+;; (advice-add 'rosin-tko-add-note :before #'marx-record-jump-maybe)
 ;; We could also consider the case of pushing a mark only when we've completed
 ;; a minibuffer command that takes us to another place, e.g. find-file
 ;; This is what's going to require the "marx-currently-recording-jump" functionality.
