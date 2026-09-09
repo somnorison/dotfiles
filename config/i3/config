@@ -140,6 +140,10 @@ bindsym $mod+z focus child
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
 
+# Hyper utility windows: float at 532 x 260 and toggle together with F11.
+bindsym F11 [title="^Hyper"] scratchpad show, resize set 532 px 260 px
+for_window [title="^Hyper"] floating enable, resize set 532 px 260 px, move scratchpad, scratchpad show
+
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
