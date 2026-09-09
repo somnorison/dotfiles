@@ -144,6 +144,11 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
+# Dedicated utility terminal: F12 creates it if absent, otherwise toggles it.
+# Match WM_CLASS so the shell can continue changing the window title.
+for_window [class="^scratch-terminal$"] floating enable, move scratchpad, resize set 1024 px 768 px, scratchpad show
+bindsym F12 exec --no-startup-id bash ~/.config/i3/scratch-terminal.sh
+
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
